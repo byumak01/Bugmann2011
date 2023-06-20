@@ -17,7 +17,7 @@ def create_hidden_layers(hidden_layer_count, neuron_count, neuron_eqs, pool_capa
     arr = []
     for i in range(hidden_layer_count):
         arr.append(
-            NeuronGroup(1, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler'))
+            NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler'))
         arr[i].w_pool = pool_capacity
         arr[i].namespace['tau'] = ev.tau
         arr[i].namespace['v_th'] = ev.threshold

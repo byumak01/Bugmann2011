@@ -59,7 +59,7 @@ def updater(t):
 net = Network(collect())
 net.add(hidden_layers, hidden_layer_mon, synapse_objects)
 
-input_layer.rates[:100] = 100 * Hz
+input_layer.rates[:3] = 100 * Hz
 
 net.run(50 * ms)
 
