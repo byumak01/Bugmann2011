@@ -2,12 +2,6 @@ import synaptic_current as sc
 import eqs_and_variables as ev
 from brian2 import *
 
-# Dictionary named as weight_delay holds a dictionary named "indexes" until delay time is passed.
-# Key for this dictionary is the time and Synapse object which received a spike.
-# For example if a spike came at 20. ms, a key will be created and its first value will be 20 + delay and second
-# value will be the Synapse objects index.
-weight_delay = {}
-
 
 # When a spike is received a new key in the weight_delay dictionary is created. For more information about weight_delay
 # dictionary please check where weight_delay dictionary is defined.
@@ -56,7 +50,7 @@ def check_synapses(synapse_obj):
 
 
 # This function will check if any spikes fired.
-def check_any_spikes(time, hidden_layers, synapse_objects):
+def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
     # The for loop will let us iterate over all synapse_obj objects.
     for synapse_obj in synapse_objects:
         # I store the index of Synapse object inside a variable.
@@ -82,12 +76,12 @@ def check_any_spikes(time, hidden_layers, synapse_objects):
             # Now we will iterate over w_index to put every spike time correct places in our dictionary named as
             # spike_times.
             for w_idx in w_index:
-                if (syn_obj_idx, w_idx) in sc.spike_times:
+                if (syn_obj_idx, w_idx) in spike_times:
                     # If we already have a key for the selected Synapse object and synapse_obj index, we append spike time
                     # to there.
-                    add_spike_time(synapse_obj, syn_obj_idx, w_idx, sc.spike_times)
+                    add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times)
                 else:
                     # If we do not have a key for the selected synapse_obj and synapse_obj object we create a new key and then
                     # append the spike time to there.
-                    create_key_for_spike_times(syn_obj_idx, w_idx, sc.spike_times)
-                    add_spike_time(synapse_obj, syn_obj_idx, w_idx, sc.spike_times)
+                    create_key_for_spike_times(syn_obj_idx, w_idx, spike_times)
+                    add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times)

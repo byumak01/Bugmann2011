@@ -26,6 +26,9 @@ delay = 2 * ms
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
 
+# Synaptic transmission probability
+probability = 1
+
 # pool_capacity represents weight pool capacity of neuron
 pool_capacity = 8
 
@@ -51,6 +54,10 @@ rf_row_count = 3
 rf_column_count = 3
 
 
+def create_dictionary():
+    return {}
+
+
 # Defining necessary equations and variables for Neuron Group object.
 neuron_eqs = '''
 dv/dt = -(v/(tau)) + total_current*Hz : 1 # Equation 1 from article.
@@ -65,11 +72,12 @@ syn_eqs = '''
 w : 1 # w represents the weights.
 spike_fired : boolean # Becomes true if pre-synaptic neuron fired a spike, variable is used to determine which synapse_obj transmitted the spike.
 spike_time : second # Records the firing time.
+p : 1 # Will represent probability.
 '''
 
 # Defining necessary arguments to execute when a pre-synaptic spike is fired.
 on_pre_arg = '''
-spike_fired = True
+spike_fired = True*flag*(rand()<p)
 spike_time = t
 '''
 

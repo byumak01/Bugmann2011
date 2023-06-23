@@ -1,17 +1,10 @@
 from brian2 import *
 import eqs_and_variables as ev
 
+
 # spike_k represents the k. spike time.
 # spike_k_minus_1 represents the k-1. spike time.
 # t represents current simulation time.
-
-
-# Defining a dictionary to hold spike times inside it.
-# Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
-# The key will be a tuple with 2 values. First value will represent the Synapse object number, second value will
-# represent the synapse_obj number. For example if a key is (1, 2) that means this is the key for second synapse_obj of
-# first synapse_obj object.
-spike_times = {}
 
 
 # Alpha function
