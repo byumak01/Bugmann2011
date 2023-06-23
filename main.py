@@ -2,6 +2,7 @@
 # 12/06/2023  01.36
 
 from brian2 import *
+import connection_of_synapses as cofs
 import eqs_and_variables as ev
 import synaptic_current as sc
 import create_layers as cl
@@ -22,15 +23,24 @@ input_layer_mon = SpikeMonitor(input_layer, record=True)
 # Creating hidden layers, used variables and equations are defined inside eqs_and_variables.py file.
 hidden_layers = cl.create_hidden_layers(ev.hidden_layer_count, ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
 
-# Will be used later !!
-# response_layer = cl.create_response_layer(ev.neuron_count ,ev.neuron_eqs, ev.pool_capacity)
+# Creating response layer.
+response_layer = cl.create_response_layer(ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
 
 # Creating State Monitors for each hidden layer to be able to track voltage, total current values and pool reserves of
 # neurons in the layers.
 hidden_layer_mon = cl.create_hidden_layer_mon(hidden_layers)
 
-synapse_objects = cl.create_synapse_objects(ev.syn_eqs, hidden_layers, input_layer, ev.on_pre_arg, ev.on_post_arg,
-                                            ev.probability, ev.initial_weights)
+# Creating synapse objects that connects layers to each other.
+synapse_objects = cl.create_synapse_objects(ev.syn_eqs, hidden_layers, response_layer, input_layer, ev.on_pre_arg,
+                                            ev.on_post_arg)
+
+# Making synaptic connections between layers.
+for post_neuron_idx in range(ev.neuron_count):
+    cofs.make_synaptic_connections(post_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
+                                   ev.rf_column_count, synapse_objects)
+
+# Giving initial values to synapse objects
+cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
 
 # Defining a dictionary to hold spike times inside it.
 # Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
@@ -64,8 +74,8 @@ def updater(t):
     # If wd_key has another value than [] that means there are synapses
     if wd_keys:
         wr.call_weight_update(wd_keys, weight_delay, hidden_layers, synapse_objects)
-        print("Current time", t)
-        print(synapse_objects[0].w)
+        # print("Current time", t)
+        # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
     sc.total_synaptic_current(t, spike_times, hidden_layers, synapse_objects)
 

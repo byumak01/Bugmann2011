@@ -39,7 +39,7 @@ firing_rate = 0 * Hz
 hidden_layer_count = 1
 
 # neuron_count variable shows how many neurons will be in a layer.
-neuron_count = 3
+neuron_count = 16
 
 # row count
 ng_row_count = 4
