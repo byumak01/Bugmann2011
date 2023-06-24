@@ -17,11 +17,13 @@ def create_hidden_layers(hidden_layer_count, neuron_count, neuron_eqs, pool_capa
     arr = []
     for i in range(hidden_layer_count):
         arr.append(
-            NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler'))
+            NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler',
+                        refractory='refractory_period'))
         arr[i].w_pool = pool_capacity
         arr[i].namespace['tau'] = ev.tau
         arr[i].namespace['v_th'] = ev.threshold
         arr[i].namespace['beta'] = ev.beta
+        arr[i].namespace['refractory_period'] = ev.refractory_period
     return arr
 
 
@@ -36,11 +38,13 @@ def create_hidden_layer_mon(hidden_layers):
 
 # create_response_layer function will create response layer
 def create_response_layer(neuron_count, neuron_eqs, pool_capacity):
-    response_layer = NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler')
+    response_layer = NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler',
+                                 refractory='refractory_period')
     response_layer.w_pool = pool_capacity
     response_layer.namespace['tau'] = ev.tau
     response_layer.namespace['v_th'] = ev.threshold
     response_layer.namespace['beta'] = ev.beta
+    response_layer.namespace['refractory_period'] = ev.refractory_period
     return response_layer
 
 

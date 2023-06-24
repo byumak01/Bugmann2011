@@ -23,6 +23,8 @@ fraction = 0.8
 # delay represents how much time needs to pass until new synaptic weights become active after a spike arrives.
 delay = 2 * ms
 
+refractory_period = 2*ms
+
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
 
@@ -39,19 +41,19 @@ firing_rate = 0 * Hz
 hidden_layer_count = 1
 
 # neuron_count variable shows how many neurons will be in a layer.
-neuron_count = 16
+neuron_count = 100
 
 # row count
-ng_row_count = 4
+ng_row_count = 10
 
 # column count
-ng_column_count = 4
+ng_column_count = 10
 
 # rf row count
-rf_row_count = 3
+rf_row_count = 5
 
 # rf column count
-rf_column_count = 3
+rf_column_count = 5
 
 
 def create_dictionary():
@@ -71,14 +73,14 @@ flag : boolean # If flag value of a neuron is True, that means neuron can receiv
 syn_eqs = '''  
 w : 1 # w represents the weights.
 spike_fired : boolean # Becomes true if pre-synaptic neuron fired a spike, variable is used to determine which synapse_obj transmitted the spike.
-spike_time : second # Records the firing time.
+spike_time_syn : second # Records the firing time.
 p : 1 # Will represent probability.
 '''
 
 # Defining necessary arguments to execute when a pre-synaptic spike is fired.
 on_pre_arg = '''
-spike_fired = True*flag*(rand()<p)
-spike_time = t
+spike_fired = True*(rand()<p)
+spike_time_syn = t
 '''
 
 # Defining necessary arguments to execute when post-synaptic spike is fired.

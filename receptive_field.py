@@ -30,8 +30,7 @@ def get_2d_indices_of_rf_neurons(post_neuron_idx, ng_row_count, ng_column_count,
     post_neuron_row_idx, post_neuron_col_idx = get_2d_indices(post_neuron_idx, ng_row_count, ng_column_count)
 
     row_range = rf_row_count // 2
-    col_range = rf_column_count % 2
-
+    col_range = rf_column_count // 2
     pre_neuron_2d_indices = find_rf_neurons(post_neuron_row_idx, post_neuron_col_idx, row_range, col_range,
                                             ng_row_count, ng_column_count)
 
