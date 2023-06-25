@@ -64,8 +64,6 @@ def create_synapse_objects(syn_eqs, hidden_layers, response_layer, input_layer, 
             Synapses(hidden_layers[i], hidden_layers[i + 1], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg))
 
     # Lastly I make the connection between last hidden layer and Response layer.
-    # I do this separately because connection rule between last layer and response layer is different.
-    # Also for same reason I did create response layer separately in another function.
     arr.append(Synapses(hidden_layers[hidden_layers_len - 1], response_layer, model=syn_eqs, on_pre=on_pre_arg))
 
     return arr

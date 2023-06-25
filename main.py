@@ -8,10 +8,30 @@ import synaptic_current as sc
 import create_layers as cl
 import check_for_spikes as cs
 import weight_rule as wr
+import enable_flag as ef
 import time
 
 # Starting time to calculate how much time it takes to run simulation.
 start = time.time()
+
+# Defining a dictionary to hold spike times inside it.
+# Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
+# The key will be a tuple with 2 values. First value will represent the Synapse object number, second value will
+# represent the synapse_obj number. For example if a key is (1, 2) that means this is the key for second synapse_obj of
+# first synapse_obj object.
+spike_times = ev.create_dictionary()
+
+# Dictionary named as weight_delay holds a dictionary named "indexes" until delay time is passed.
+# Key for this dictionary is the time and Synapse object which received a spike.
+# For example if a spike came at 20. ms, a key will be created and its first value will be 20 + delay and second
+# value will be the Synapse objects index.
+# Create a dictionary for holding weight until delay time is passed.
+weight_delay = ev.create_dictionary()
+
+# Dictionary which hold indices of enabled neurons for each layer. key represents the hidden layer index,
+# value side has index values for enabled neurons in selected layer.
+# This dictionary will be useful while we perform pruning.
+enabled_neurons = ev.create_dictionary()
 
 # Defining input layer as a Poisson Group.
 # Their firing rate will be changed later.
@@ -34,6 +54,16 @@ hidden_layer_mon = cl.create_hidden_layer_mon(hidden_layers)
 synapse_objects = cl.create_synapse_objects(ev.syn_eqs, hidden_layers, response_layer, input_layer, ev.on_pre_arg,
                                             ev.on_post_arg)
 
+# Finding which neuron in last hidden layer will be the head of the cone then setting its flag to true.
+target_neuron_idx = ef.set_target_neuron_flag(hidden_layers, enabled_neurons)
+
+# Setting enable flag for rest of the hidden_layers
+ef.set_enable_flags_for_rest(hidden_layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
+                             ev.rf_column_count, len(hidden_layers) - 2, enabled_neurons)
+
+for i in range(len(hidden_layers)):
+    print(hidden_layers[i].flag)
+
 # Making synaptic connections between layers.
 for post_neuron_idx in range(ev.neuron_count):
     cofs.make_synaptic_connections(post_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
@@ -41,20 +71,6 @@ for post_neuron_idx in range(ev.neuron_count):
 
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
-
-# Defining a dictionary to hold spike times inside it.
-# Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
-# The key will be a tuple with 2 values. First value will represent the Synapse object number, second value will
-# represent the synapse_obj number. For example if a key is (1, 2) that means this is the key for second synapse_obj of
-# first synapse_obj object.
-spike_times = ev.create_dictionary()
-
-# Dictionary named as weight_delay holds a dictionary named "indexes" until delay time is passed.
-# Key for this dictionary is the time and Synapse object which received a spike.
-# For example if a spike came at 20. ms, a key will be created and its first value will be 20 + delay and second
-# value will be the Synapse objects index.
-# Create a dictionary for holding weight until delay time is passed.
-weight_delay = ev.create_dictionary()
 
 
 @network_operation(when='after_end')

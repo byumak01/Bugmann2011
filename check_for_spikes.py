@@ -31,7 +31,7 @@ def remove_spike_time(syn_idx, w_idx, spike_times):
 
 # add_spike_time function will add the spike time to the correct place in spike times dictionary.
 def add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times):
-    spike_times[(syn_obj_idx, w_idx)].append(synapse_obj.spike_time_syn[w_idx])
+    spike_times[(syn_obj_idx, w_idx)].append(synapse_obj.spike_time[w_idx])
     # Since we are interested in only last 20 spike we will remove more than that.
     # But since we also need k-1. spike time for synaptic depression we will remove first element array when length
     # becomes greater than 21.
