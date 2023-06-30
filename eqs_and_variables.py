@@ -37,8 +37,9 @@ pool_capacity = 8
 # firing_rate represents the initial firing rate of Poisson group neurons
 firing_rate = 0 * Hz
 
-# hidden_layer_count represents how many hidden layers will be in simulation.
-hidden_layer_count = 1
+# layer_count represents how many hidden layers will be in simulation.
+# MUST BE EQUAL OR BIGGER THAN 2 !!!!
+layer_count = 2
 
 # neuron_count variable shows how many neurons will be in a layer.
 neuron_count = 16

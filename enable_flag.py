@@ -14,39 +14,41 @@ def add_neuron_indices_to_enabled_neurons(hidden_layer_idx, enabled_neurons, neu
     enabled_neurons[hidden_layer_idx].add(tuple(neuron_indices))
 
 
-def set_enable_flags_for_rest(hidden_layers, post_neuron_indices, ng_row_count, ng_column_count, rf_row_count,
-                              rf_column_count, hidden_layer_idx, enabled_neurons):
-    # Creating a key for given hidden_layer_idx
-    create_key_for_enabled_neurons(hidden_layer_idx, enabled_neurons)
+def set_enable_flags_for_rest(layer, post_neuron_indices, ng_row_count, ng_column_count, rf_row_count,
+                              rf_column_count, layer_idx, enabled_neurons):
+    if layer_idx >= 0:
+        # Creating a key for given layer_idx
+        create_key_for_enabled_neurons(layer_idx, enabled_neurons)
 
-    for post_neuron_idx in post_neuron_indices:
-        pre_synaptic_indices = rf.get_indices_of_rf_neurons(post_neuron_idx, ng_row_count, ng_column_count,
-                                                            rf_row_count, rf_column_count)
+        for post_neuron_idx in post_neuron_indices:
+            pre_synaptic_indices = rf.get_indices_of_rf_neurons(post_neuron_idx, ng_row_count, ng_column_count,
+                                                                rf_row_count, rf_column_count)
 
-        add_neuron_indices_to_enabled_neurons(hidden_layer_idx, enabled_neurons, pre_synaptic_indices)
+            add_neuron_indices_to_enabled_neurons(layer_idx, enabled_neurons, pre_synaptic_indices)
 
-        for pre_syn_idx in pre_synaptic_indices:
-            hidden_layers[hidden_layer_idx].flag[pre_syn_idx] = True
+            for pre_syn_idx in pre_synaptic_indices:
+                layer[layer_idx].flag[pre_syn_idx] = True
 
-    hidden_layer_idx -= 1
+        layer_idx -= 1
 
-    if hidden_layer_idx >= 0:
-        set_enable_flags_for_rest(hidden_layers, enabled_neurons[hidden_layer_idx], ng_row_count, ng_column_count,
-                                  rf_row_count, rf_column_count, hidden_layer_idx, enabled_neurons)
+        set_enable_flags_for_rest(layer, enabled_neurons[layer_idx], ng_row_count, ng_column_count,
+                                  rf_row_count, rf_column_count, layer_idx, enabled_neurons)
 
 
 # set_target_neuron_flag function will set the flag value of given neuron in last hidden layer to true.
-def set_target_neuron_flag(hidden_layers, enabled_neurons):
+def set_target_neuron_flag(layers, enabled_neurons):
     # getting index of target neuron.
     target_neuron_idx = [get_target_neuron_index()]
 
     # Creating a key for last hidden layer in the enabled_neurons dict.
-    create_key_for_enabled_neurons(len(hidden_layers) - 1, enabled_neurons)
+    # The reason I do len(layers) - 2   is I do subtract 1 since indexes start from 0,
+    # I subtract another one since last layer is response layer, so I want to reach layer before the last layer.
+    create_key_for_enabled_neurons(len(layers) - 2, enabled_neurons)
     # Adding the index of enabled neuron in last hidden layer to the corresponding place in enabled_neurons dict.
-    add_neuron_indices_to_enabled_neurons(len(hidden_layers) - 1, enabled_neurons, target_neuron_idx)
+    add_neuron_indices_to_enabled_neurons(len(layers) - 2, enabled_neurons, target_neuron_idx)
 
     # Setting flag value of target neuron in layer 5 to true.
-    hidden_layers[len(hidden_layers) - 1].flag[target_neuron_idx] = True
+    layers[len(layers) - 2].flag[target_neuron_idx] = True
 
     return target_neuron_idx
 

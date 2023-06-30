@@ -33,10 +33,10 @@ def create_key_for_results(results, synapse_obj_idx, post_neuron_idx):
     results[(synapse_obj_idx, post_neuron_idx)] = [0]
 
 
-def total_synaptic_current(t, spike_times_dict, hidden_layers, synapse_objects):
+def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
     # I first create a dictionary to store calculated values inside it.
     # The key side of this dictionary will be very similar to the spike_times dictionary.
-    # Key is a tuple with 2 elements. First element represents which hidden layer object index does
+    # Key is a tuple with 2 elements. First element represents which layer object index does
     # the post synaptic neuron belongs.
     # Second element will represent index of post-synaptic neuron.
     # Value side holds total_current value.
@@ -70,4 +70,9 @@ def total_synaptic_current(t, spike_times_dict, hidden_layers, synapse_objects):
 
     # We will add values inside results dictionary to correct places in neuron group objects.
     for key2 in results:
-        hidden_layers[key2[0]].total_current[key2[1]] = results[key2]
+        print("Hidden layer len", len(layers))
+        print("key0", key2[0])
+        print("Total current len", len(layers[key2[0]].total_current))
+        print("key1", key2[1])
+        print(layers[key2[0]].total_current[key2[1]])
+        layers[key2[0]].total_current[key2[1]] = results[key2]

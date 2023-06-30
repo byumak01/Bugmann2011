@@ -41,28 +41,25 @@ input_layer = cl.create_poisson_group(ev.neuron_count, ev.firing_rate)
 input_layer_mon = SpikeMonitor(input_layer, record=True)
 
 # Creating hidden layers, used variables and equations are defined inside eqs_and_variables.py file.
-hidden_layers = cl.create_hidden_layers(ev.hidden_layer_count, ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
-
-# Creating response layer.
-response_layer = cl.create_response_layer(ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
+layers = cl.create_layers(ev.layer_count, ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
 
 # Creating State Monitors for each hidden layer to be able to track voltage, total current values and pool reserves of
 # neurons in the layers.
-hidden_layer_mon = cl.create_hidden_layer_mon(hidden_layers)
+layer_mon = cl.create_layer_mon(layers)
 
 # Creating synapse objects that connects layers to each other.
-synapse_objects = cl.create_synapse_objects(ev.syn_eqs, hidden_layers, response_layer, input_layer, ev.on_pre_arg,
+synapse_objects = cl.create_synapse_objects(ev.syn_eqs, layers, input_layer, ev.on_pre_arg,
                                             ev.on_post_arg)
 
 # Finding which neuron in last hidden layer will be the head of the cone then setting its flag to true.
-target_neuron_idx = ef.set_target_neuron_flag(hidden_layers, enabled_neurons)
+target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 
-# Setting enable flag for rest of the hidden_layers
-ef.set_enable_flags_for_rest(hidden_layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
-                             ev.rf_column_count, len(hidden_layers) - 2, enabled_neurons)
+# Setting enable flag for rest of the layers
+ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
+                             ev.rf_column_count, len(layers) - 3, enabled_neurons)
 
-for i in range(len(hidden_layers)):
-    print(hidden_layers[i].flag)
+for i in range(len(layers)):
+    print(layers[i].flag)
 
 # Making synaptic connections between layers.
 for post_neuron_idx in range(ev.neuron_count):
@@ -89,18 +86,18 @@ def updater(t):
 
     # If wd_key has another value than [] that means there are synapses
     if wd_keys:
-        wr.call_weight_update(wd_keys, weight_delay, hidden_layers, synapse_objects)
+        wr.call_weight_update(wd_keys, weight_delay, layers, synapse_objects)
         # print("Current time", t)
         # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
-    sc.total_synaptic_current(t, spike_times, hidden_layers, synapse_objects)
+    sc.total_synaptic_current(t, spike_times, layers, synapse_objects)
 
 
 # Arraylarin icinde tanimlanmis NG'leri vs. bu sekilde yapmak lazim !!!
 net = Network(collect())
-net.add(hidden_layers, hidden_layer_mon, synapse_objects)
+net.add(layers, layer_mon, synapse_objects)
 
-input_layer.rates[:3] = 100 * Hz
+input_layer.rates[:16] = 100 * Hz
 
 net.run(50 * ms)
 
@@ -110,8 +107,8 @@ elapsed_time = end - start
 print('Execution time:', elapsed_time, 'seconds')
 
 plt.figure(300)
-plt.plot(hidden_layer_mon[0].t / ms, hidden_layer_mon[0].v[0], label='v', color='b')
-plt.plot(hidden_layer_mon[0].t / ms, (hidden_layer_mon[0].total_current[0]) / 400, label='current', color='r',
+plt.plot(layer_mon[0].t / ms, layer_mon[0].v[0], label='v', color='b')
+plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[0]) / 400, label='current', color='r',
          linestyle='dashed')
 plt.title("Graph for v")
 xlabel('Time (ms)')
