@@ -57,7 +57,7 @@ target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 # Setting enable flag for rest of the layers
 if len(layers) - 3 >= 0:
     ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
-                                ev.rf_column_count, len(layers) - 3, enabled_neurons)
+                                 ev.rf_column_count, len(layers) - 3, enabled_neurons)
 
 for i in range(len(layers)):
     print(layers[i].flag)
@@ -108,8 +108,8 @@ elapsed_time = end - start
 print('Execution time:', elapsed_time, 'seconds')
 
 plt.figure(300)
-plt.plot(layer_mon[0].t / ms, layer_mon[0].v[0], label='v', color='b')
-plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[0]) / 400, label='current', color='r',
+plt.plot(layer_mon[0].t / ms, layer_mon[0].v[5], label='v', color='b')
+plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[5]) / 400, label='current', color='r',
          linestyle='dashed')
 plt.title("Graph for v")
 xlabel('Time (ms)')

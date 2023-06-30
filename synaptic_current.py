@@ -70,9 +70,4 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
 
     # We will add values inside results dictionary to correct places in neuron group objects.
     for key2 in results:
-        print("Hidden layer len", len(layers))
-        print("key0", key2[0])
-        print("Total current len", len(layers[key2[0]].total_current))
-        print("key1", key2[1])
-        print(layers[key2[0]].total_current[key2[1]])
         layers[key2[0]].total_current[key2[1]] = results[key2]
