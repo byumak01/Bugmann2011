@@ -55,8 +55,9 @@ synapse_objects = cl.create_synapse_objects(ev.syn_eqs, layers, input_layer, ev.
 target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 
 # Setting enable flag for rest of the layers
-ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
-                             ev.rf_column_count, len(layers) - 3, enabled_neurons)
+if len(layers) - 3 >= 0:
+    ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
+                                ev.rf_column_count, len(layers) - 3, enabled_neurons)
 
 for i in range(len(layers)):
     print(layers[i].flag)

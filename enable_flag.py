@@ -16,21 +16,21 @@ def add_neuron_indices_to_enabled_neurons(hidden_layer_idx, enabled_neurons, neu
 
 def set_enable_flags_for_rest(layer, post_neuron_indices, ng_row_count, ng_column_count, rf_row_count,
                               rf_column_count, layer_idx, enabled_neurons):
+    # Creating a key for given layer_idx
+    create_key_for_enabled_neurons(layer_idx, enabled_neurons)
+
+    for post_neuron_idx in post_neuron_indices:
+        pre_synaptic_indices = rf.get_indices_of_rf_neurons(post_neuron_idx, ng_row_count, ng_column_count,
+                                                            rf_row_count, rf_column_count)
+
+        add_neuron_indices_to_enabled_neurons(layer_idx, enabled_neurons, pre_synaptic_indices)
+
+        for pre_syn_idx in pre_synaptic_indices:
+            layer[layer_idx].flag[pre_syn_idx] = True
+
+    layer_idx -= 1
+
     if layer_idx >= 0:
-        # Creating a key for given layer_idx
-        create_key_for_enabled_neurons(layer_idx, enabled_neurons)
-
-        for post_neuron_idx in post_neuron_indices:
-            pre_synaptic_indices = rf.get_indices_of_rf_neurons(post_neuron_idx, ng_row_count, ng_column_count,
-                                                                rf_row_count, rf_column_count)
-
-            add_neuron_indices_to_enabled_neurons(layer_idx, enabled_neurons, pre_synaptic_indices)
-
-            for pre_syn_idx in pre_synaptic_indices:
-                layer[layer_idx].flag[pre_syn_idx] = True
-
-        layer_idx -= 1
-
         set_enable_flags_for_rest(layer, enabled_neurons[layer_idx], ng_row_count, ng_column_count,
                                   rf_row_count, rf_column_count, layer_idx, enabled_neurons)
 

@@ -39,7 +39,7 @@ firing_rate = 0 * Hz
 
 # layer_count represents how many hidden layers will be in simulation.
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
-layer_count = 2
+layer_count = 3
 
 # neuron_count variable shows how many neurons will be in a layer.
 neuron_count = 16
