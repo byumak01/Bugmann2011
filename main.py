@@ -10,6 +10,7 @@ import check_for_spikes as cs
 import weight_rule as wr
 import enable_flag as ef
 import time
+import draw
 
 # Starting time to calculate how much time it takes to run simulation.
 start = time.time()
@@ -70,9 +71,16 @@ for post_neuron_idx in range(ev.neuron_count):
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
 
+# Drawing enabled neurons.
+draw.draw_enabled_neurons(layers)
+
 
 @network_operation(when='after_end')
 def updater(t):
+    # I am resetting the board's part which shows voltage levels of the neurons so that I can draw current
+    # voltage levels.
+    draw.reset_board()
+
     # check_any_spikes function will check if a spike is fired during current time step.
     # If a spike is fired it will be stored inside a dictionary. For more explanation about dictionary please check
     # spike_times = {} declaration inside synaptic_current.py
@@ -107,15 +115,15 @@ end = time.time()
 elapsed_time = end - start
 print('Execution time:', elapsed_time, 'seconds')
 
-plt.figure(300)
-plt.plot(layer_mon[0].t / ms, layer_mon[0].v[5], label='v', color='b')
-plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[5]) / 400, label='current', color='r',
-         linestyle='dashed')
-plt.title("Graph for v")
-xlabel('Time (ms)')
-ylabel('v (volt)')
-legend()
-plt.show()
+# plt.figure(300)
+# plt.plot(layer_mon[0].t / ms, layer_mon[0].v[5], label='v', color='b')
+# plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[5]) / 400, label='current', color='r',
+#          linestyle='dashed')
+# plt.title("Graph for v")
+# xlabel('Time (ms)')
+# ylabel('v (volt)')
+# legend()
+# plt.show()
 
 print(input_layer_mon.i)
 print(input_layer_mon.t)

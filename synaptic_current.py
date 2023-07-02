@@ -1,5 +1,6 @@
 from brian2 import *
 import eqs_and_variables as ev
+import draw
 
 
 # spike_k represents the k. spike time.
@@ -69,5 +70,8 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
                                                                                       synapse_weight)
 
     # We will add values inside results dictionary to correct places in neuron group objects.
+    # I also draw voltage value of selected neuron.
     for key2 in results:
         layers[key2[0]].total_current[key2[1]] = results[key2]
+        voltage = layers[key2[0]].v
+        draw.draw_current_state(voltage, key2[1], key2[0], 'white', flag)
