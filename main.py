@@ -71,15 +71,14 @@ for post_neuron_idx in range(ev.neuron_count):
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
 
-# Drawing enabled neurons.
-draw.draw_enabled_neurons(layers)
-
 
 @network_operation(when='after_end')
 def updater(t):
     # I am resetting the board's part which shows voltage levels of the neurons so that I can draw current
     # voltage levels.
     draw.reset_board()
+    # Drawing enabled neurons.
+    draw.draw_enabled_neurons(layers)
 
     # check_any_spikes function will check if a spike is fired during current time step.
     # If a spike is fired it will be stored inside a dictionary. For more explanation about dictionary please check
@@ -128,3 +127,6 @@ print('Execution time:', elapsed_time, 'seconds')
 print(input_layer_mon.i)
 print(input_layer_mon.t)
 print(synapse_objects[0].w)
+print(len(layers))
+print(layers[0].fire_count)
+print(layers[1].fire_count)

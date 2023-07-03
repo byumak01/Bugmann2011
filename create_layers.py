@@ -47,7 +47,7 @@ def create_synapse_objects(syn_eqs, layers, input_layer, on_pre_arg, on_post_arg
 
     # Then I connect other hidden layers here. Every hidden layer is connected to next hidden layer in the list.
     # For example hidden layer 2 is connected to hidden layer 3 and hidden layer 3 is connected to hidden layer 4.
-    for i in range(1, hidden_layers_len - 1):
+    for i in range(0, hidden_layers_len - 1):
         arr.append(
             Synapses(layers[i], layers[i + 1], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg))
 

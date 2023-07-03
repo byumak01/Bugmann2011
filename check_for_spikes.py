@@ -55,7 +55,6 @@ def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
     for synapse_obj in synapse_objects:
         # I store the index of Synapse object inside a variable.
         syn_obj_idx = synapse_objects.index(synapse_obj)
-
         # If any spike came from selected Synapse object the spike_fired value of the synapse_obj which received the spike
         # will be True.
         # If any spikes are received I store the index value of synapses which transmitted spike inside a variable named
