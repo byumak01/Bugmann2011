@@ -39,22 +39,22 @@ firing_rate = 0 * Hz
 
 # layer_count represents how many hidden layers will be in simulation.
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
-layer_count = 3
+layer_count = 6
 
-# neuron_count variable shows how many neurons will be in a layer.
-neuron_count = 16
+# neuron_count variable shows how many neurons will be in a layer_idx.
+neuron_count = 100
 
 # row count
-ng_row_count = 4
+ng_row_count = 10
 
 # column count
-ng_column_count = 4
+ng_column_count = 10
 
 # rf row count
-rf_row_count = 3
+rf_row_count = 5
 
 # rf column count
-rf_column_count = 3
+rf_column_count = 5
 
 
 def create_dictionary():
@@ -88,8 +88,8 @@ spike_time = t
 on_post_arg = '''
 fire_count += 1/N_incoming  # When a post-synaptic neuron fires a spike this equation will increase the fire_count by 1 for the neuron that fired spike.
 '''
-# NOTE ABOUT fire_count variable: I could also do this incrementation in on_pre arguments but then I would not be able to increment this value for Response layer neurons.
-# Because Response layer is not in a position as pre-synaptic variable in any of the Synapse objects.
+# NOTE ABOUT fire_count variable: I could also do this incrementation in on_pre arguments but then I would not be able to increment this value for Response layer_idx neurons.
+# Because Response layer_idx is not in a position as pre-synaptic variable in any of the Synapse objects.
 
 # ANOTHER NOTE ABOUT fire_count variable: In the on_post_argument when I am incrementing fire_count I am dividing 1 by N_incoming.
 # The reason for that is, when because of the definition of Brian's on_post argument, it will increment the value for every synapse_obj that is connected to post-synaptic neuron.

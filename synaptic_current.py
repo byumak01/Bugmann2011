@@ -37,7 +37,7 @@ def create_key_for_results(results, synapse_obj_idx, post_neuron_idx):
 def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
     # I first create a dictionary to store calculated values inside it.
     # The key side of this dictionary will be very similar to the spike_times dictionary.
-    # Key is a tuple with 2 elements. First element represents which layer object index does
+    # Key is a tuple with 2 elements. First element represents which layer_idx object index does
     # the post synaptic neuron belongs.
     # Second element will represent index of post-synaptic neuron.
     # Value side holds total_current value.

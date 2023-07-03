@@ -29,12 +29,12 @@ spike_times = ev.create_dictionary()
 # Create a dictionary for holding weight until delay time is passed.
 weight_delay = ev.create_dictionary()
 
-# Dictionary which hold indices of enabled neurons for each layer. key represents the hidden layer index,
-# value side has index values for enabled neurons in selected layer.
+# Dictionary which hold indices of enabled neurons for each layer_idx. key represents the hidden layer_idx index,
+# value side has index values for enabled neurons in selected layer_idx.
 # This dictionary will be useful while we perform pruning.
 enabled_neurons = ev.create_dictionary()
 
-# Defining input layer as a Poisson Group.
+# Defining input layer_idx as a Poisson Group.
 # Their firing rate will be changed later.
 input_layer = cl.create_poisson_group(ev.neuron_count, ev.firing_rate)
 
@@ -44,7 +44,7 @@ input_layer_mon = SpikeMonitor(input_layer, record=True)
 # Creating hidden layers, used variables and equations are defined inside eqs_and_variables.py file.
 layers = cl.create_layers(ev.layer_count, ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
 
-# Creating State Monitors for each hidden layer to be able to track voltage, total current values and pool reserves of
+# Creating State Monitors for each hidden layer_idx to be able to track voltage, total current values and pool reserves of
 # neurons in the layers.
 layer_mon = cl.create_layer_mon(layers)
 
@@ -52,7 +52,7 @@ layer_mon = cl.create_layer_mon(layers)
 synapse_objects = cl.create_synapse_objects(ev.syn_eqs, layers, input_layer, ev.on_pre_arg,
                                             ev.on_post_arg)
 
-# Finding which neuron in last hidden layer will be the head of the cone then setting its flag to true.
+# Finding which neuron in last hidden layer_idx will be the head of the cone then setting its flag to true.
 target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 
 # Setting enable flag for rest of the layers
@@ -70,6 +70,9 @@ for post_neuron_idx in range(ev.neuron_count):
 
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
+
+for element in [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68]:
+    layers[len(layers) - 1].flag[element] = True
 
 
 @network_operation(when='after_end')
@@ -105,7 +108,8 @@ def updater(t):
 net = Network(collect())
 net.add(layers, layer_mon, synapse_objects)
 
-input_layer.rates[:16] = 100 * Hz
+for element in [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87]:
+    input_layer.rates[element] = 100 * Hz
 
 net.run(51 * ms)
 
@@ -123,10 +127,16 @@ print('Execution time:', elapsed_time, 'seconds')
 # ylabel('v (volt)')
 # legend()
 # plt.show()
-
+"""
 print(input_layer_mon.i)
 print(input_layer_mon.t)
 print(synapse_objects[0].w)
 print(len(layers))
+"""
 print(layers[0].fire_count)
 print(layers[1].fire_count)
+print(layers[2].fire_count)
+print(layers[3].fire_count)
+print(layers[4].fire_count)
+print(layers[5].fire_count)
+

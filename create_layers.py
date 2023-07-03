@@ -4,14 +4,14 @@ from brian2 import *
 import eqs_and_variables as ev
 
 
-# create_poisson_group function creates a poisson group object as input layer.
+# create_poisson_group function creates a poisson group object as input layer_idx.
 def create_poisson_group(neuron_count, firing_rate):
     return PoissonGroup(neuron_count, firing_rate)
 
 
 # create_hidden_layers function creates an array which consists ever.
-# IMPORTANT: Every hidden layer will use same equations and will have same number of neurons.
-# IMPORTANT: Simulation must have at least 1 hidden layer.
+# IMPORTANT: Every hidden layer_idx will use same equations and will have same number of neurons.
+# IMPORTANT: Simulation must have at least 1 hidden layer_idx.
 # In other words you can not directly connect input_layer to response_layer with this code structure.
 def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
     arr = []
@@ -27,7 +27,7 @@ def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
     return arr
 
 
-# create_hidden_layer_mon function creates monitors for every hidden layer,
+# create_hidden_layer_mon function creates monitors for every hidden layer_idx,
 # which will allow us to monitor values like voltage, total_current values of neurons etc.
 def create_layer_mon(layers):
     arr = []
@@ -45,8 +45,8 @@ def create_synapse_objects(syn_eqs, layers, input_layer, on_pre_arg, on_post_arg
     # since input_layer is not in the same list with hidden layers I do that separately.
     arr = [Synapses(input_layer, layers[0], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg)]
 
-    # Then I connect other hidden layers here. Every hidden layer is connected to next hidden layer in the list.
-    # For example hidden layer 2 is connected to hidden layer 3 and hidden layer 3 is connected to hidden layer 4.
+    # Then I connect other hidden layers here. Every hidden layer_idx is connected to next hidden layer_idx in the list.
+    # For example hidden layer_idx 2 is connected to hidden layer_idx 3 and hidden layer_idx 3 is connected to hidden layer_idx 4.
     for i in range(0, hidden_layers_len - 1):
         arr.append(
             Synapses(layers[i], layers[i + 1], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg))
