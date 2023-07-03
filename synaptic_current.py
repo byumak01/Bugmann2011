@@ -74,4 +74,4 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
     for key2 in results:
         layers[key2[0]].total_current[key2[1]] = results[key2]
         voltage = layers[key2[0]].v[key2[1]]
-        draw.draw_current_state(voltage, key2[1], key2[0], 'white', False), draw.draw_outlines() if t == 10*ms else None
+        draw.draw_current_state(voltage, key2[1], key2[0], 'white', False), draw.draw_outlines(t) if t/ms % 10 == 0 else None

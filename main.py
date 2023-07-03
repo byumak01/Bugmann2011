@@ -107,7 +107,7 @@ net.add(layers, layer_mon, synapse_objects)
 
 input_layer.rates[:16] = 100 * Hz
 
-net.run(50 * ms)
+net.run(51 * ms)
 
 end = time.time()
 

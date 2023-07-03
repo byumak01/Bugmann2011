@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 import receptive_field as rf
 import eqs_and_variables as ev
+from brian2 import *
 
 width = 15 * (ev.layer_count + 1) * ev.ng_column_count
 height = 21 * ev.ng_row_count + 25
@@ -72,11 +73,11 @@ def draw_voltage_level(x1, y1, x2, y2, color):
     draw.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
 
 
-def draw_outlines():
+def draw_outlines(t):
     for layer_idx in range(ev.layer_count + 1):
         for neuron_idx in range(ev.neuron_count):
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, False)
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, True)
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
-    image.save("test.png", "PNG")
+    image.save(f"{t/ms}.png", "PNG")
