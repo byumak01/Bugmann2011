@@ -11,9 +11,15 @@ import weight_rule as wr
 import enable_flag as ef
 import time
 import draw
+import datetime
+import os
 
 # Starting time to calculate how much time it takes to run simulation.
 start = time.time()
+current_date = datetime.datetime.now().strftime("%d%m%Y_%H%M")
+folder_path = f"RESULTS_{current_date}"
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 
 # Defining a dictionary to hold spike times inside it.
 # Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
@@ -101,7 +107,7 @@ def updater(t):
         # print("Current time", t)
         # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
-    sc.total_synaptic_current(t, spike_times, layers, synapse_objects)
+    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path)
 
 
 # Arraylarin icinde tanimlanmis NG'leri vs. bu sekilde yapmak lazim !!!
@@ -133,10 +139,18 @@ print(input_layer_mon.t)
 print(synapse_objects[0].w)
 print(len(layers))
 """
+
 print(layers[0].fire_count)
 print(layers[1].fire_count)
 print(layers[2].fire_count)
 print(layers[3].fire_count)
 print(layers[4].fire_count)
 print(layers[5].fire_count)
+
+print(layers[0].v)
+print(layers[1].v)
+print(layers[2].v)
+print(layers[3].v)
+print(layers[4].v)
+print(layers[5].v)
 

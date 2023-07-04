@@ -73,11 +73,12 @@ def draw_voltage_level(x1, y1, x2, y2, color):
     draw.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
 
 
-def draw_outlines(t):
+def draw_outlines(t, folder_path):
     for layer_idx in range(ev.layer_count + 1):
         for neuron_idx in range(ev.neuron_count):
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, False)
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, True)
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
-    image.save(f"{t/ms}.png", "PNG")
+    image_name = f"{folder_path}/{t/ms}.png"
+    image.save(image_name, "PNG")

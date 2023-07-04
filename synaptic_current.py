@@ -34,7 +34,7 @@ def create_key_for_results(results, synapse_obj_idx, post_neuron_idx):
     results[(synapse_obj_idx, post_neuron_idx)] = [0]
 
 
-def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
+def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_path):
     # I first create a dictionary to store calculated values inside it.
     # The key side of this dictionary will be very similar to the spike_times dictionary.
     # Key is a tuple with 2 elements. First element represents which layer_idx object index does
@@ -74,4 +74,5 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects):
     for key2 in results:
         layers[key2[0]].total_current[key2[1]] = results[key2]
         voltage = layers[key2[0]].v[key2[1]]
-        draw.draw_current_state(voltage, key2[1], key2[0], 'white', False), draw.draw_outlines(t) if t/ms % 10 == 0 else None
+        draw.draw_current_state(voltage, key2[1], key2[0], 'white', False), draw.draw_outlines(t,
+                                                                            folder_path) if t / ms % 10 == 0 else None
