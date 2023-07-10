@@ -147,10 +147,4 @@ print(layers[3].fire_count)
 print(layers[4].fire_count)
 print(layers[5].fire_count)
 
-print(layers[0].v)
-print(layers[1].v)
-print(layers[2].v)
-print(layers[3].v)
-print(layers[4].v)
-print(layers[5].v)
 

@@ -25,7 +25,7 @@ def get_voltage_rate(voltage):
     voltage = voltage * 5 / 0.015
     if voltage >= 5:
         return 5
-    elif 5 > voltage > 4.70:
+    elif 5 > voltage >= 4.70:
         return 4
     elif 4.70 > voltage >= 4.55:
         return 3

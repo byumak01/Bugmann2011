@@ -23,7 +23,7 @@ fraction = 0.8
 # delay represents how much time needs to pass until new synaptic weights become active after a spike arrives.
 delay = 2 * ms
 
-refractory_period = 2*ms
+refractory_period = 2 * ms
 
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
