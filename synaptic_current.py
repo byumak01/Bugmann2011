@@ -19,7 +19,8 @@ def create_hash_map_for_alpha_function():
 
 # Alpha function
 def alpha_function(t, spike_k, hash_map):
-    return hash_map[(t - spike_k - ev.dirac) / ms] if (t - spike_k - ev.dirac) / ms in hash_map and t > spike_k + ev.dirac else 0
+    key = round((t - spike_k - ev.dirac) / ms, 1)
+    return hash_map[key] if key in hash_map else 0
 
 
 # Synaptic Depression

@@ -80,5 +80,5 @@ def draw_outlines(t, folder_path):
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, True)
             draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
-    image_name = f"{folder_path}/{t/ms}.png"
+    image_name = f"{folder_path}/{t / ms}.png"
     image.save(image_name, "PNG")

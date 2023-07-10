@@ -69,7 +69,6 @@ if len(layers) - 3 >= 0:
     ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
                                  ev.rf_column_count, len(layers) - 3, enabled_neurons)
 
-
 # Making synaptic connections between layers.
 for post_neuron_idx in range(ev.neuron_count):
     cofs.make_synaptic_connections(post_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
@@ -109,7 +108,6 @@ def updater(t):
         # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
     sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map)
-    print(layers[0].v[53])
 
 
 # Arraylarin icinde tanimlanmis NG'leri vs. bu sekilde yapmak lazim !!!
