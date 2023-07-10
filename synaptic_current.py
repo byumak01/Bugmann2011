@@ -7,11 +7,19 @@ import draw
 # spike_k_minus_1 represents the k-1. spike time.
 # t represents current simulation time.
 
+# Creating a hashmap for alpha function values.
+def create_hash_map_for_alpha_function():
+    h_map = {}
+    for x in range(0, 151, 1):
+        x_value = x / 10.0
+        result = (math.exp(1) / (ev.t_max / ms)) * x_value * math.exp(-(x_value / (ev.t_max / ms)))
+        h_map[x_value] = result
+    return h_map
+
 
 # Alpha function
-def alpha_function(t, spike_k):
-    return (exp(1) / ev.t_max) * (t - spike_k - ev.dirac) * exp(-(t - spike_k - ev.dirac) / ev.t_max) if (
-            t > (spike_k + ev.dirac)) else 0
+def alpha_function(t, spike_k, hash_map):
+    return hash_map[(t - spike_k - ev.dirac) / ms] if (t - spike_k - ev.dirac) / ms in hash_map and t > spike_k + ev.dirac else 0
 
 
 # Synaptic Depression
@@ -26,15 +34,15 @@ def synaptic_depression(spike_k, spike_k_minus_1, synaptic_w):
 
 
 # Calculating Total Current
-def calculate_synaptic_current(t, spike_k, spike_k_minus_1, synaptic_w):
-    return alpha_function(t, spike_k) * synaptic_depression(spike_k, spike_k_minus_1, synaptic_w)
+def calculate_synaptic_current(t, spike_k, spike_k_minus_1, synaptic_w, hash_map):
+    return alpha_function(t, spike_k, hash_map) * synaptic_depression(spike_k, spike_k_minus_1, synaptic_w)
 
 
 def create_key_for_results(results, synapse_obj_idx, post_neuron_idx):
     results[(synapse_obj_idx, post_neuron_idx)] = [0]
 
 
-def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_path):
+def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_path, hash_map):
     # I first create a dictionary to store calculated values inside it.
     # The key side of this dictionary will be very similar to the spike_times dictionary.
     # Key is a tuple with 2 elements. First element represents which layer_idx object index does
@@ -67,7 +75,7 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
         for idx in range(length - 1):
             results[(synapse_obj_idx, post_neuron_idx)] += calculate_synaptic_current(t, spike_times_dict[key][idx + 1],
                                                                                       spike_times_dict[key][idx],
-                                                                                      synapse_weight)
+                                                                                      synapse_weight, hash_map)
 
     # We will add values inside results dictionary to correct places in neuron group objects.
     # I also draw voltage value of selected neuron.
@@ -75,4 +83,4 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
         layers[key2[0]].total_current[key2[1]] = results[key2]
         voltage = layers[key2[0]].v[key2[1]]
         draw.draw_current_state(voltage, key2[1], key2[0], 'white', False), draw.draw_outlines(t,
-                                                                            folder_path) if t / ms % 10 == 0 else None
+                                                                                               folder_path) if t / ms % 10 == 0 else None

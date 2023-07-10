@@ -21,6 +21,9 @@ folder_path = f"RESULTS_{current_date}"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
+# Creating a hashmap for alpha function values.
+hash_map = sc.create_hash_map_for_alpha_function()
+
 # Defining a dictionary to hold spike times inside it.
 # Every synapse_obj will have its own key and the spike times for that synapse_obj will be stored in the value part.
 # The key will be a tuple with 2 values. First value will represent the Synapse object number, second value will
@@ -66,8 +69,6 @@ if len(layers) - 3 >= 0:
     ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
                                  ev.rf_column_count, len(layers) - 3, enabled_neurons)
 
-for i in range(len(layers)):
-    print(layers[i].flag)
 
 # Making synaptic connections between layers.
 for post_neuron_idx in range(ev.neuron_count):
@@ -107,7 +108,8 @@ def updater(t):
         # print("Current time", t)
         # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
-    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path)
+    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map)
+    print(layers[0].v[53])
 
 
 # Arraylarin icinde tanimlanmis NG'leri vs. bu sekilde yapmak lazim !!!
@@ -146,5 +148,3 @@ print(layers[2].fire_count)
 print(layers[3].fire_count)
 print(layers[4].fire_count)
 print(layers[5].fire_count)
-
-
