@@ -54,9 +54,9 @@ def get_coordinates(voltage, neuron_idx, layer_idx, flag):
     neuron_row, neuron_col = rf.get_2d_indices(neuron_idx, ev.ng_row_count, ev.ng_column_count)
 
     row_start_position = 10 * ev.ng_row_count + 25 if flag else 5
-    x1 = (layer_idx + 1) * (10 * ev.ng_column_count + 5) + (10 * neuron_col + 5 - voltage)
+    x1 = (layer_idx + 1) * (10 * ev.ng_column_count + 10) + (10 * neuron_col + 5 - voltage)
     y1 = row_start_position + (10 * neuron_row + 5 - voltage)
-    x2 = (layer_idx + 1) * (10 * ev.ng_column_count + 5) + (10 * (neuron_col + 1) - 5 + voltage)
+    x2 = (layer_idx + 1) * (10 * ev.ng_column_count + 10) + (10 * (neuron_col + 1) - 5 + voltage)
     y2 = row_start_position + (10 * (neuron_row + 1) - 5 + voltage)
 
     return x1, y1, x2, y2
