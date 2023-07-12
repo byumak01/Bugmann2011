@@ -64,7 +64,7 @@ rf_row_count = 5
 rf_column_count = 5
 
 # input shape
-input_shape = 'A'
+input_shape = 'B'
 
 # response shape
 response_shape = 'RIGHT_HAND'

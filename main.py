@@ -20,7 +20,7 @@ start = time.time()
 
 # Creating path for saving results and variables used in simulation.
 current_date = datetime.datetime.now().strftime("%d%m%Y_%H%M")
-folder_path = f"RESULTS/{current_date}"
+folder_path = f"RESULTS/{ev.input_shape}_{current_date}"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
