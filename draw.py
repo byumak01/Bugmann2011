@@ -54,10 +54,10 @@ def draw_enabled_neurons(layers):
 def get_coordinates(voltage, neuron_idx, layer_idx, flag):
     neuron_row, neuron_col = rf.get_2d_indices(neuron_idx, ev.ng_row_count, ev.ng_column_count)
 
-    row_start_position = 10 * ev.ng_row_count + 55 if flag else 25
-    x1 = layer_idx * (10 * ev.ng_column_count + 30) + (10 * neuron_col + 5 - voltage) + 10
+    row_start_position = 10 * ev.ng_row_count + 60 if flag else 25
+    x1 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * neuron_col + 5 - voltage) + 10
     y1 = row_start_position + (10 * neuron_row + 5 - voltage)
-    x2 = layer_idx * (10 * ev.ng_column_count + 30) + (10 * (neuron_col + 1) - 5 + voltage) + 10
+    x2 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * (neuron_col + 1) - 5 + voltage) + 10
     y2 = row_start_position + (10 * (neuron_row + 1) - 5 + voltage)
 
     return x1, y1, x2, y2
@@ -96,7 +96,7 @@ def print_layer_names(x1, y1, layer_idx, flag):
     else:
         layer_name = get_layer_names_for_upper_grid(layer_idx)
 
-    draw.text((x1 + 15, y1 - 25), layer_name, fill='white', font=font)
+    draw.text((x1 + 15, y1 - 22), layer_name, fill='white', font=font)
 
 
 def print_time(t, x1, y1):

@@ -1,5 +1,8 @@
 from brian2 import *
 
+# Simulation run time
+run_time = 51 * ms
+
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
 threshold = 15 / 1000
@@ -11,19 +14,20 @@ beta = 0.91
 tau = 50 * ms
 
 # t_max represents dendritic distance between synapse_obj and soma.
-t_max = 1 * ms
+t_max = 1.0 * ms
 
 # dirac represents axonal propagation time between the pre-synaptic neuron and synapse_obj.
-dirac = 1 * ms
+dirac = 1.0 * ms
 
 # fraction represents how much of the pool will be taken. (Takes values between 0 and 1).
 # If fraction is 1, then it takes all the pool.
 fraction = 0.8
 
 # delay represents how much time needs to pass until new synaptic weights become active after a spike arrives.
-delay = 2 * ms
+delay = 2.0 * ms
 
-refractory_period = 2 * ms
+# Refractory period.
+refractory_period = 2.0 * ms
 
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
@@ -34,8 +38,11 @@ probability = 1
 # pool_capacity represents weight pool capacity of neuron
 pool_capacity = 8
 
-# firing_rate represents the initial firing rate of Poisson group neurons
-firing_rate = 0 * Hz
+# firing_rate shows firing rate of active poisson neurons.
+firing_rate = 100 * Hz
+
+# initial_firing_rate represents the initial firing rate of Poisson group neurons
+initial_firing_rate = 0 * Hz
 
 # layer_count represents how many hidden layers will be in simulation.
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
@@ -55,6 +62,20 @@ rf_row_count = 5
 
 # rf column count
 rf_column_count = 5
+
+# input shape
+input_shape = 'A'
+
+# response shape
+response_shape = 'RIGHT_HAND'
+
+responses = {'RIGHT_HAND': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
+             'LEFT_HAND': [23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65]}
+
+inputs = {'A': [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87],
+          'B': [12, 13, 14, 15, 16, 22, 27, 32, 37, 42, 43, 44, 45, 46, 47, 52, 57, 62, 67, 72, 77, 82, 83, 84, 85, 86],
+          'C': [14, 15, 16, 23, 27, 32, 42, 52, 62, 73, 77, 84, 85, 86],
+          'D': [12, 13, 14, 15, 22, 26, 32, 37, 42, 47, 52, 57, 62, 67, 72, 76, 82, 83, 84, 85]}
 
 
 def create_dictionary():

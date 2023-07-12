@@ -2,6 +2,7 @@
 # 12/06/2023  01.36
 
 from brian2 import *
+import save_simulation_setup_and_results as sssr
 import connection_of_synapses as cofs
 import eqs_and_variables as ev
 import synaptic_current as sc
@@ -16,8 +17,10 @@ import os
 
 # Starting time to calculate how much time it takes to run simulation.
 start = time.time()
+
+# Creating path for saving results and variables used in simulation.
 current_date = datetime.datetime.now().strftime("%d%m%Y_%H%M")
-folder_path = f"RESULTS_{current_date}"
+folder_path = f"RESULTS/{current_date}"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
@@ -45,7 +48,7 @@ enabled_neurons = ev.create_dictionary()
 
 # Defining input layer_idx as a Poisson Group.
 # Their firing rate will be changed later.
-input_layer = cl.create_poisson_group(ev.neuron_count, ev.firing_rate)
+input_layer = cl.create_poisson_group(ev.neuron_count, ev.initial_firing_rate)
 
 # I define a spike monitor to be able to track spike times.
 input_layer_mon = SpikeMonitor(input_layer, record=True)
@@ -77,7 +80,7 @@ for post_neuron_idx in range(ev.neuron_count):
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
 
-for element in [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68]:
+for element in ev.responses[ev.response_shape]:
     layers[len(layers) - 1].flag[element] = True
 
 
@@ -114,25 +117,17 @@ def updater(t):
 net = Network(collect())
 net.add(layers, layer_mon, synapse_objects)
 
-for element in [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87]:
-    input_layer.rates[element] = 100 * Hz
+for element in ev.inputs[ev.input_shape]:
+    input_layer.rates[element] = ev.firing_rate
 
-net.run(51 * ms)
+net.run(ev.run_time)
 
 end = time.time()
 
 elapsed_time = end - start
+sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
 print('Execution time:', elapsed_time, 'seconds')
 
-# plt.figure(300)
-# plt.plot(layer_mon[0].t / ms, layer_mon[0].v[5], label='v', color='b')
-# plt.plot(layer_mon[0].t / ms, (layer_mon[0].total_current[5]) / 400, label='current', color='r',
-#          linestyle='dashed')
-# plt.title("Graph for v")
-# xlabel('Time (ms)')
-# ylabel('v (volt)')
-# legend()
-# plt.show()
 """
 print(input_layer_mon.i)
 print(input_layer_mon.t)
