@@ -4,8 +4,8 @@ import eqs_and_variables as ev
 def save_simulation_setup_and_results(folder_path, execution_time):
     file_path = f"{folder_path}/used_setup_and_results.txt"
     with open(file_path, "w") as file:
-        file.write(f"Run time of simulation: {ev.run_time}\n")
-        file.write(f"Execution time of simulation: {execution_time}\n")
+        file.write(f"Run t of simulation: {ev.run_time}\n")
+        file.write(f"Execution t of simulation: {execution_time}\n")
         file.write("\n")
         file.write("USED SETUP:\n")
         file.write(f"neuron count per layer: {ev.neuron_count}\n")
@@ -34,8 +34,8 @@ def save_simulation_setup_and_results(folder_path, execution_time):
         file.write("\n\n")
         file.write("EXPLANATION ABOUT VARIABLES: \n")
         file.write("Threshold is multiplied by beta for threshold reset.\n")
-        file.write("Delay represents how much time after new weights becomes effective after a spike is received.\n")
+        file.write("Delay represents how much t after new weights becomes effective after a spike is received.\n")
         file.write("t_max represents dendritic distance between the synapse and the soma.\n")
-        file.write("dirac represents axonal propagation time between pre-synaptic neuron and synapse.\n")
+        file.write("dirac represents axonal propagation t between pre-synaptic neuron and synapse.\n")
         file.write("fraction shows how much of the pool will be given to the synapse which transmitted a spike.\n")
         file.write("pool capacity shows how much weight a neuron has its disposal at the beginning of the simulation.\n")

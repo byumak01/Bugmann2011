@@ -3,9 +3,9 @@ import eqs_and_variables as ev
 import draw
 
 
-# spike_k represents the k. spike time.
-# spike_k_minus_1 represents the k-1. spike time.
-# t represents current simulation time.
+# spike_k represents the k. spike t.
+# spike_k_minus_1 represents the k-1. spike t.
+# t represents current simulation t.
 
 # Creating a hashmap for alpha function values.
 def create_hash_map_for_alpha_function():

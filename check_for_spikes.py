@@ -30,11 +30,11 @@ def remove_spike_time(syn_idx, w_idx, spike_times):
     spike_times[(syn_idx, w_idx)].pop(0)
 
 
-# add_spike_time function will add the spike time to the correct place in spike times dictionary.
+# add_spike_time function will add the spike t to the correct place in spike times dictionary.
 def add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times):
     spike_times[(syn_obj_idx, w_idx)].append(synapse_obj.spike_time[w_idx])
     # Since we are interested in only last 20 spike we will remove more than that.
-    # But since we also need k-1. spike time for synaptic depression we will remove first element array when length
+    # But since we also need k-1. spike t for synaptic depression we will remove first element array when length
     # becomes greater than 21.
     if len(spike_times[(syn_obj_idx, w_idx)]) > 21:
         remove_spike_time(syn_obj_idx, w_idx, spike_times)
@@ -51,7 +51,7 @@ def check_synapses(synapse_obj):
 
 
 # This function will check if any spikes fired.
-def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
+def check_any_spikes(t, synapse_objects, weight_delay, spike_times):
     # The for loop will let us iterate over all synapse_obj objects.
     for synapse_obj in synapse_objects:
         # I store the index of Synapse object inside a variable.
@@ -62,7 +62,8 @@ def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
         # w_index.
         w_index = check_synapses(synapse_obj)
         # draw_firing_neurons_in_stimulus_layer will draw firing neurons in stimulus layer if any.
-        draw.draw_firing_neurons_in_stimulus_layer(synapse_obj.i[w_index]) if syn_obj_idx == 0 else None
+        draw.draw_firing_neurons_in_stimulus_layer(
+            synapse_obj.i[w_index]) if syn_obj_idx == 0 and t / ms % 10 == 0 else None
         # If any spikes are received, the indexes would be assigned to w_index variable, so the condition below will
         # be True
         if len(w_index) > 0:
@@ -71,19 +72,19 @@ def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
             synapse_obj.spike_fired[w_index] = False
 
             # Creating key for weight_delay dictionary.
-            create_key_for_weight_delay(time, syn_obj_idx, weight_delay)
+            create_key_for_weight_delay(t, syn_obj_idx, weight_delay)
             # Adding indexes of synapses which received a spike to value side of created key.
-            add_indexes_to_weight_delay(time, syn_obj_idx, weight_delay, w_index)
+            add_indexes_to_weight_delay(t, syn_obj_idx, weight_delay, w_index)
 
-            # Now we will iterate over w_index to put every spike time correct places in our dictionary named as
+            # Now we will iterate over w_index to put every spike t correct places in our dictionary named as
             # spike_times.
             for w_idx in w_index:
                 if (syn_obj_idx, w_idx) in spike_times:
-                    # If we already have a key for the selected Synapse object and synapse_obj index, we append spike time
+                    # If we already have a key for the selected Synapse object and synapse_obj index, we append spike t
                     # to there.
                     add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times)
                 else:
                     # If we do not have a key for the selected synapse_obj and synapse_obj object we create a new key and then
-                    # append the spike time to there.
+                    # append the spike t to there.
                     create_key_for_spike_times(syn_obj_idx, w_idx, spike_times)
                     add_spike_time(synapse_obj, syn_obj_idx, w_idx, spike_times)

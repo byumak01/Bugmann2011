@@ -1,7 +1,7 @@
 from brian2 import *
 
-# Simulation run time
-run_time = 11 * ms
+# Simulation run t
+run_time = 51 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
@@ -13,20 +13,20 @@ syn_connection_prob = 0.5
 # beta
 beta = 0.91
 
-# tau represents RC time constant.
+# tau represents RC t constant.
 tau = 50 * ms
 
 # t_max represents dendritic distance between synapse_obj and soma.
 t_max = 1.0 * ms
 
-# dirac represents axonal propagation time between the pre-synaptic neuron and synapse_obj.
+# dirac represents axonal propagation t between the pre-synaptic neuron and synapse_obj.
 dirac = 1.0 * ms
 
 # fraction represents how much of the pool will be taken. (Takes values between 0 and 1).
 # If fraction is 1, then it takes all the pool.
 fraction = 0.8
 
-# delay represents how much time needs to pass until new synaptic weights become active after a spike arrives.
+# delay represents how much t needs to pass until new synaptic weights become active after a spike arrives.
 delay = 2.0 * ms
 
 # Refractory period.
@@ -98,7 +98,7 @@ flag : boolean # If flag value of a neuron is True, that means neuron can receiv
 syn_eqs = '''  
 w : 1 # w represents the weights.
 spike_fired : boolean # Becomes true if pre-synaptic neuron fired a spike, variable is used to determine which synapse_obj transmitted the spike.
-spike_time : second # Records the firing time.
+spike_time : second # Records the firing t.
 p : 1 # Will represent probability.
 '''
 

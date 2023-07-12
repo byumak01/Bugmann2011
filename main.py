@@ -15,7 +15,7 @@ import draw
 import datetime
 import os
 
-# Starting time to calculate how much time it takes to run simulation.
+# Starting t to calculate how much t it takes to run simulation.
 start = time.time()
 
 # Creating path for saving results and variables used in simulation.
@@ -34,11 +34,11 @@ hash_map = sc.create_hash_map_for_alpha_function()
 # first synapse_obj object.
 spike_times = ev.create_dictionary()
 
-# Dictionary named as weight_delay holds a dictionary named "indexes" until delay time is passed.
-# Key for this dictionary is the time and Synapse object which received a spike.
+# Dictionary named as weight_delay holds a dictionary named "indexes" until delay t is passed.
+# Key for this dictionary is the t and Synapse object which received a spike.
 # For example if a spike came at 20. ms, a key will be created and its first value will be 20 + delay and second
 # value will be the Synapse objects index.
-# Create a dictionary for holding weight until delay time is passed.
+# Create a dictionary for holding weight until delay t is passed.
 weight_delay = ev.create_dictionary()
 
 # Dictionary which hold indices of enabled neurons for each layer_idx. key represents the hidden layer_idx index,
@@ -94,14 +94,14 @@ def updater(t):
     # Drawing active neurons in stimulus layer.
     draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
 
-    # check_any_spikes function will check if a spike is fired during current time step.
+    # check_any_spikes function will check if a spike is fired during current t step.
     # If a spike is fired it will be stored inside a dictionary. For more explanation about dictionary please check
     # spike_times = {} declaration inside synaptic_current.py
-    # Also indexes of synapses which received a spike will be stored inside a dictionary. When delay time is passed,
+    # Also indexes of synapses which received a spike will be stored inside a dictionary. When delay t is passed,
     # weight update function will be called by using information stored in this dictionary and weights will be updated.
     cs.check_any_spikes(t, synapse_objects, weight_delay, spike_times)
 
-    # check_if_delay_time_passed function will check if any weights needs to be updated at current time step.
+    # check_if_delay_time_passed function will check if any weights needs to be updated at current t step.
     # If there are any weights that needs to be updated key to reach that synaptic indexes is returned.
     # Otherwise, function returns 0.
     wd_keys = wr.check_if_delay_time_passed(t / ms, weight_delay)
@@ -109,7 +109,7 @@ def updater(t):
     # If wd_key has another value than [] that means there are synapses
     if wd_keys:
         wr.call_weight_update(wd_keys, weight_delay, layers, synapse_objects)
-        # print("Current time", t)
+        # print("Current t", t)
         # print(synapse_objects[0].w)
     # total_synaptic_current function will calculate total synaptic current for every neuron.
     sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map)
@@ -128,7 +128,7 @@ end = time.time()
 
 elapsed_time = end - start
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
-print('Execution time:', elapsed_time, 'seconds')
+print('Execution t:', elapsed_time, 'seconds')
 
 """
 print(input_layer_mon.i)

@@ -2,7 +2,7 @@ import eqs_and_variables as ev
 from brian2 import *
 
 
-# check_if_delay_time is passed function checks if delay time is passed for any keys inside dictionary,
+# check_if_delay_time is passed function checks if delay t is passed for any keys inside dictionary,
 # these keys will be returned. Returned keys will later be used to call weight_update function.
 def check_if_delay_time_passed(time, weight_delay):
     wd_keys = [key for key in weight_delay.keys() if key[0] <= time]
