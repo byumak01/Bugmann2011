@@ -1,6 +1,7 @@
 import synaptic_current as sc
 import eqs_and_variables as ev
 from brian2 import *
+import draw
 
 
 # When a spike is received a new key in the weight_delay dictionary is created. For more information about weight_delay
@@ -60,6 +61,8 @@ def check_any_spikes(time, synapse_objects, weight_delay, spike_times):
         # If any spikes are received I store the index value of synapses which transmitted spike inside a variable named
         # w_index.
         w_index = check_synapses(synapse_obj)
+        # draw_firing_neurons_in_stimulus_layer will draw firing neurons in stimulus layer if any.
+        draw.draw_firing_neurons_in_stimulus_layer(synapse_obj.i[w_index]) if syn_obj_idx == 0 else None
         # If any spikes are received, the indexes would be assigned to w_index variable, so the condition below will
         # be True
         if len(w_index) > 0:

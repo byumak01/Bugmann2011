@@ -75,7 +75,7 @@ if len(layers) - 3 >= 0:
 # Making synaptic connections between layers.
 for post_neuron_idx in range(ev.neuron_count):
     cofs.make_synaptic_connections(post_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
-                                   ev.rf_column_count, synapse_objects)
+                                   ev.rf_column_count, synapse_objects, ev.syn_connection_prob)
 
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
@@ -91,6 +91,8 @@ def updater(t):
     draw.reset_board()
     # Drawing enabled neurons.
     draw.draw_enabled_neurons(layers)
+    # Drawing active neurons in stimulus layer.
+    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
 
     # check_any_spikes function will check if a spike is fired during current time step.
     # If a spike is fired it will be stored inside a dictionary. For more explanation about dictionary please check

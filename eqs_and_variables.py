@@ -1,11 +1,14 @@
 from brian2 import *
 
 # Simulation run time
-run_time = 51 * ms
+run_time = 11 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
 threshold = 15 / 1000
+
+# synaptic connection probability
+syn_connection_prob = 0.5
 
 # beta
 beta = 0.91
@@ -64,7 +67,7 @@ rf_row_count = 5
 rf_column_count = 5
 
 # input shape
-input_shape = 'B'
+input_shape = 'A'
 
 # response shape
 response_shape = 'RIGHT_HAND'

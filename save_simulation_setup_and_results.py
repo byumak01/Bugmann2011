@@ -29,6 +29,7 @@ def save_simulation_setup_and_results(folder_path, execution_time):
         file.write(f"pool capacity: {ev.pool_capacity}\n")
         file.write(f"Initial weights of synapses: {ev.initial_weights}\n")
         file.write(f"Synaptic transmission probability: {ev.probability}\n")
+        file.write(f"Synaptic connection probability: {ev.syn_connection_prob}\n")
         file.write(f"Firing rate of active poisson neurons: {ev.firing_rate}\n")
         file.write("\n\n")
         file.write("EXPLANATION ABOUT VARIABLES: \n")

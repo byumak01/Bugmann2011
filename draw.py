@@ -45,9 +45,9 @@ def draw_enabled_neurons(layers):
         for neuron_idx in range(len(layer_obj.flag)):
             flag = layer_obj.flag[neuron_idx]
             if flag:
-                draw_current_state(5, neuron_idx, layer_idx, 'white', True)
+                draw_current_state(ev.threshold, neuron_idx, layer_idx, 'white', True)
             else:
-                draw_current_state(5, neuron_idx, layer_idx, 'black', True)
+                draw_current_state(ev.threshold, neuron_idx, layer_idx, 'black', True)
 
 
 # get_coordinates function will return coordinates for squares which are presenting neurons.
@@ -100,7 +100,19 @@ def print_layer_names(x1, y1, layer_idx, flag):
 
 
 def print_time(t, x1, y1):
-    draw.text((x1 + 20, y1 + 30), f"t = {t/ms} ms", font=font, fill='white')
+    draw.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
+
+
+def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
+    for idx in active_poisson_neurons:
+        x1, y1, x2, y2 = get_coordinates(1, idx, 0, False)
+        draw_voltage_level(x1, y1, x2, y2, 'white')
+
+
+def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
+    for idx in firing_poisson_neurons:
+        x1, y1, x2, y2 = get_coordinates(5, idx, 0, False)
+        draw_voltage_level(x1, y1, x2, y2, 'white')
 
 
 def draw_outlines_layer_names_and_time(t, folder_path):
