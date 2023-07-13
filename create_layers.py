@@ -28,7 +28,7 @@ def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
 
 
 # create_hidden_layer_mon function creates monitors for every hidden layer_idx,
-# which will allow us to monitor values like voltage, total_current values of neurons etc.
+# which will allow us to monitor values like state_of_neuron, total_current values of neurons etc.
 def create_layer_mon(layers):
     arr = []
     for i in range(len(layers)):

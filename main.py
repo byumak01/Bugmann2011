@@ -56,7 +56,7 @@ input_layer_mon = SpikeMonitor(input_layer, record=True)
 # Creating hidden layers, used variables and equations are defined inside eqs_and_variables.py file.
 layers = cl.create_layers(ev.layer_count, ev.neuron_count, ev.neuron_eqs, ev.pool_capacity)
 
-# Creating State Monitors for each hidden layer_idx to be able to track voltage, total current values and pool reserves of
+# Creating State Monitors for each hidden layer_idx to be able to track state_of_neuron, total current values and pool reserves of
 # neurons in the layers.
 layer_mon = cl.create_layer_mon(layers)
 
@@ -86,8 +86,8 @@ for element in ev.responses[ev.response_shape]:
 
 @network_operation(when='after_end')
 def updater(t):
-    # I am resetting the board's part which shows voltage levels of the neurons so that I can draw current
-    # voltage levels.
+    # I am resetting the board's part which shows state_of_neuron levels of the neurons so that I can draw current
+    # state_of_neuron levels.
     draw.reset_board()
     # Drawing enabled neurons.
     draw.draw_enabled_neurons(layers)
@@ -130,9 +130,10 @@ elapsed_time = end - start
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
 print('Execution t:', elapsed_time, 'seconds')
 
-"""
+
 print(input_layer_mon.i)
 print(input_layer_mon.t)
+"""
 print(synapse_objects[0].w)
 print(len(layers))
 """

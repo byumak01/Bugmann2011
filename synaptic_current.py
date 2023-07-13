@@ -79,7 +79,7 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
                                                                                       synapse_weight, hash_map)
 
     # We will add values inside results dictionary to correct places in neuron group objects.
-    # I also draw voltage value of selected neuron.
+    # I also draw state_of_neuron value of selected neuron.
     for key2 in results:
         layers[key2[0]].total_current[key2[1]] = results[key2]
         voltage = layers[key2[0]].v[key2[1]]

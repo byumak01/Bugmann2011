@@ -17,23 +17,16 @@ def reset_board():
 
 
 # draw_recruited_neuron function makes recruited neurons red.
-def draw_recruited_neurons(voltage, neuron_idx, layer_idx, flag):
-    x1, y1, x2, y2 = get_coordinates(voltage, neuron_idx, layer_idx, flag)
+def draw_recruited_neurons(state_of_neuron, neuron_idx, layer_idx, flag):
+    x1, y1, x2, y2 = get_coordinates(state_of_neuron, neuron_idx, layer_idx, flag)
     draw.rectangle([(x1, y1), (x2, y2)], fill='red')
 
 
-def get_voltage_rate(voltage):
-    voltage = voltage * 5 / 0.015
-    if voltage >= 5:
+def get_state_of_neuron(voltage):
+    if voltage >= ev.threshold:
         return 5
-    elif 5 > voltage >= 4.70:
-        return 4
-    elif 4.70 > voltage >= 4.55:
-        return 3
-    elif 4.55 > voltage >= 4:
-        return 2
-    elif 4 > voltage > 0:
-        return 1
+    elif 0 < voltage < ev.threshold:
+        return 1.5
     else:
         return 0
 
@@ -51,26 +44,26 @@ def draw_enabled_neurons(layers):
 
 
 # get_coordinates function will return coordinates for squares which are presenting neurons.
-def get_coordinates(voltage, neuron_idx, layer_idx, flag):
+def get_coordinates(state_of_neuron, neuron_idx, layer_idx, flag):
     neuron_row, neuron_col = rf.get_2d_indices(neuron_idx, ev.ng_row_count, ev.ng_column_count)
 
     row_start_position = 10 * ev.ng_row_count + 60 if flag else 25
-    x1 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * neuron_col + 5 - voltage) + 10
-    y1 = row_start_position + (10 * neuron_row + 5 - voltage)
-    x2 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * (neuron_col + 1) - 5 + voltage) + 10
-    y2 = row_start_position + (10 * (neuron_row + 1) - 5 + voltage)
+    x1 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * neuron_col + 5 - state_of_neuron) + 10
+    y1 = row_start_position + (10 * neuron_row + 5 - state_of_neuron)
+    x2 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * (neuron_col + 1) - 5 + state_of_neuron) + 10
+    y2 = row_start_position + (10 * (neuron_row + 1) - 5 + state_of_neuron)
 
     return x1, y1, x2, y2
 
 
 def draw_current_state(voltage, neuron_idx, layer_idx, color, flag):
-    voltage = get_voltage_rate(voltage)
-    x1, y1, x2, y2 = get_coordinates(voltage, neuron_idx, layer_idx + 1, flag)
-    draw_voltage_level(x1, y1, x2, y2, color)
-    draw_recruited_neurons(5, neuron_idx, layer_idx + 1, True) if voltage > 0 and flag == False else None
+    state_of_neuron = get_state_of_neuron(voltage)
+    x1, y1, x2, y2 = get_coordinates(state_of_neuron, neuron_idx, layer_idx + 1, flag)
+    draw_neuron_activity(x1, y1, x2, y2, color)
+    draw_recruited_neurons(5, neuron_idx, layer_idx + 1, True) if state_of_neuron > 0 and flag == False else None
 
 
-def draw_voltage_level(x1, y1, x2, y2, color):
+def draw_neuron_activity(x1, y1, x2, y2, color):
     draw.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
 
 
@@ -105,14 +98,14 @@ def print_time(t, x1, y1):
 
 def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
     for idx in active_poisson_neurons:
-        x1, y1, x2, y2 = get_coordinates(1, idx, 0, False)
-        draw_voltage_level(x1, y1, x2, y2, 'white')
+        x1, y1, x2, y2 = get_coordinates(1.5, idx, 0, False)
+        draw_neuron_activity(x1, y1, x2, y2, 'white')
 
 
 def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
     for idx in firing_poisson_neurons:
         x1, y1, x2, y2 = get_coordinates(5, idx, 0, False)
-        draw_voltage_level(x1, y1, x2, y2, 'white')
+        draw_neuron_activity(x1, y1, x2, y2, 'white')
 
 
 def draw_outlines_layer_names_and_time(t, folder_path):
