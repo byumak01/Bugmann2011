@@ -8,7 +8,7 @@ run_time = 51 * ms
 threshold = 15 / 1000
 
 # synaptic connection probability
-syn_connection_prob = 0.5
+syn_connection_prob = 1
 
 # beta
 beta = 0.91
@@ -91,7 +91,7 @@ dv/dt = -(v/(tau)) + total_current*Hz : 1 # Equation 1 from article.
 w_pool : 1   # w_pool will be used for weight pool of neuron.
 total_current : 1 # Represents total synaptic current from article.
 fire_count : 1 # This variable is used for finding out how many times a neuron produced a spike.
-if_lower_grid : boolean # If if_lower_grid value of a neuron is True, that means neuron can receive and produce spikes.
+flag : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
 '''
 
 # Defining necessary variables for Synapse object.
@@ -104,7 +104,7 @@ p : 1 # Will represent probability.
 
 # Defining necessary arguments to execute when a pre-synaptic spike is fired.
 on_pre_arg = '''
-spike_fired = True*if_lower_grid*(rand()<p)
+spike_fired = True*flag*(rand()<p)
 spike_time = t
 '''
 

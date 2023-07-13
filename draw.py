@@ -17,8 +17,8 @@ def reset_board():
 
 
 # draw_recruited_neuron function makes recruited neurons red.
-def draw_recruited_neurons(voltage, neuron_idx, layer_idx):
-    state_of_neuron = get_state_of_neuron(voltage)
+def draw_recruited_neurons(neuron_idx, layer_idx):
+    state_of_neuron = get_state_of_neuron(ev.threshold)
     get_coordinates_and_draw(state_of_neuron, neuron_idx, layer_idx, 'red', True)
 
 
@@ -39,7 +39,7 @@ def get_state_of_neuron(voltage):
 # draw_enabled_neurons function will make enabled neurons white.
 def draw_enabled_neurons(layers):
     for layer_obj in layers:
-        layer_idx = layers.index(layer_obj)
+        layer_idx = layers.index(layer_obj) + 1
         for neuron_idx in range(len(layer_obj.flag)):
             enabled_flag_of_neuron = layer_obj.flag[neuron_idx]
             color = 'white' if enabled_flag_of_neuron else 'black'

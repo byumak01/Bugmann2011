@@ -64,10 +64,10 @@ layer_mon = cl.create_layer_mon(layers)
 synapse_objects = cl.create_synapse_objects(ev.syn_eqs, layers, input_layer, ev.on_pre_arg,
                                             ev.on_post_arg)
 
-# Finding which neuron in last hidden layer_idx will be the head of the cone then setting its if_lower_grid to true.
+# Finding which neuron in last hidden layer_idx will be the head of the cone then setting its flag to true.
 target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 
-# Setting enable if_lower_grid for rest of the layers
+# Setting enable flag for rest of the layers
 if len(layers) - 3 >= 0:
     ef.set_enable_flags_for_rest(layers, target_neuron_idx, ev.ng_row_count, ev.ng_column_count, ev.rf_row_count,
                                  ev.rf_column_count, len(layers) - 3, enabled_neurons)
