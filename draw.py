@@ -17,9 +17,14 @@ def reset_board():
 
 
 # draw_recruited_neuron function makes recruited neurons red.
-def draw_recruited_neurons(state_of_neuron, neuron_idx, layer_idx, flag):
-    x1, y1, x2, y2 = get_coordinates(state_of_neuron, neuron_idx, layer_idx, flag)
-    draw.rectangle([(x1, y1), (x2, y2)], fill='red')
+def draw_recruited_neurons(voltage, neuron_idx, layer_idx):
+    state_of_neuron = get_state_of_neuron(voltage)
+    get_coordinates_and_draw(state_of_neuron, neuron_idx, layer_idx, 'red', True)
+
+
+def get_coordinates_and_draw(state_of_neuron, neuron_idx, layer_idx, color, if_lower_grid):
+    x1, y1, x2, y2 = get_coordinates(state_of_neuron, neuron_idx, layer_idx, if_lower_grid)
+    draw_given_coordinates(x1, y1, x2, y2, f"{color}")
 
 
 def get_state_of_neuron(voltage):
@@ -36,18 +41,16 @@ def draw_enabled_neurons(layers):
     for layer_obj in layers:
         layer_idx = layers.index(layer_obj)
         for neuron_idx in range(len(layer_obj.flag)):
-            flag = layer_obj.flag[neuron_idx]
-            if flag:
-                draw_current_state(ev.threshold, neuron_idx, layer_idx, 'white', True)
-            else:
-                draw_current_state(ev.threshold, neuron_idx, layer_idx, 'black', True)
+            enabled_flag_of_neuron = layer_obj.flag[neuron_idx]
+            color = 'white' if enabled_flag_of_neuron else 'black'
+            get_coordinates_and_draw(5, neuron_idx, layer_idx, color, True)
 
 
 # get_coordinates function will return coordinates for squares which are presenting neurons.
-def get_coordinates(state_of_neuron, neuron_idx, layer_idx, flag):
+def get_coordinates(state_of_neuron, neuron_idx, layer_idx, if_lower_grid):
     neuron_row, neuron_col = rf.get_2d_indices(neuron_idx, ev.ng_row_count, ev.ng_column_count)
 
-    row_start_position = 10 * ev.ng_row_count + 60 if flag else 25
+    row_start_position = 10 * ev.ng_row_count + 60 if if_lower_grid else 25
     x1 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * neuron_col + 5 - state_of_neuron) + 10
     y1 = row_start_position + (10 * neuron_row + 5 - state_of_neuron)
     x2 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * (neuron_col + 1) - 5 + state_of_neuron) + 10
@@ -56,14 +59,12 @@ def get_coordinates(state_of_neuron, neuron_idx, layer_idx, flag):
     return x1, y1, x2, y2
 
 
-def draw_current_state(voltage, neuron_idx, layer_idx, color, flag):
+def draw_neuron_activity(voltage, neuron_idx, layer_idx):
     state_of_neuron = get_state_of_neuron(voltage)
-    x1, y1, x2, y2 = get_coordinates(state_of_neuron, neuron_idx, layer_idx + 1, flag)
-    draw_neuron_activity(x1, y1, x2, y2, color)
-    draw_recruited_neurons(5, neuron_idx, layer_idx + 1, True) if state_of_neuron > 0 and flag == False else None
+    get_coordinates_and_draw(state_of_neuron, neuron_idx, layer_idx + 1, 'white', False)
 
 
-def draw_neuron_activity(x1, y1, x2, y2, color):
+def draw_given_coordinates(x1, y1, x2, y2, color):
     draw.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
 
 
@@ -98,14 +99,12 @@ def print_time(t, x1, y1):
 
 def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
     for idx in active_poisson_neurons:
-        x1, y1, x2, y2 = get_coordinates(1.5, idx, 0, False)
-        draw_neuron_activity(x1, y1, x2, y2, 'white')
+        get_coordinates_and_draw(1.5, idx, 0, 'white', False)
 
 
 def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
     for idx in firing_poisson_neurons:
-        x1, y1, x2, y2 = get_coordinates(5, idx, 0, False)
-        draw_neuron_activity(x1, y1, x2, y2, 'white')
+        get_coordinates_and_draw(5, idx, 0, 'white', False)
 
 
 def draw_outlines_layer_names_and_time(t, folder_path):

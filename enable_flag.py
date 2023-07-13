@@ -35,7 +35,7 @@ def set_enable_flags_for_rest(layer, post_neuron_indices, ng_row_count, ng_colum
                                   rf_row_count, rf_column_count, layer_idx, enabled_neurons)
 
 
-# set_target_neuron_flag function will set the flag value of given neuron in last hidden layer_idx to true.
+# set_target_neuron_flag function will set the if_lower_grid value of given neuron in last hidden layer_idx to true.
 def set_target_neuron_flag(layers, enabled_neurons):
     # getting index of target neuron.
     target_neuron_idx = [get_target_neuron_index()]
@@ -47,7 +47,7 @@ def set_target_neuron_flag(layers, enabled_neurons):
     # Adding the index of enabled neuron in last hidden layer_idx to the corresponding place in enabled_neurons dict.
     add_neuron_indices_to_enabled_neurons(len(layers) - 2, enabled_neurons, target_neuron_idx)
 
-    # Setting flag value of target neuron in layer_idx 5 to true.
+    # Setting if_lower_grid value of target neuron in layer_idx 5 to true.
     layers[len(layers) - 2].flag[target_neuron_idx] = True
 
     return target_neuron_idx
