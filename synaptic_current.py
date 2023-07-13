@@ -85,5 +85,5 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
         voltage = layers[key2[0]].v[key2[1]]
         if t / ms % 10 == 0:
             draw.draw_neuron_activity(voltage, key2[1], key2[0])
+            draw.draw_if_recruited(key2[1], key2[0] + 1)
             draw.draw_outlines_layer_names_and_time(t, folder_path)
-            draw.draw_recruited_neurons(key2[1], key2[0] + 1)

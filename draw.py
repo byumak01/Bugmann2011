@@ -17,7 +17,7 @@ def reset_board():
 
 
 # draw_recruited_neuron function makes recruited neurons red.
-def draw_recruited_neurons(neuron_idx, layer_idx):
+def draw_if_recruited(neuron_idx, layer_idx):
     state_of_neuron = get_state_of_neuron(ev.threshold)
     get_coordinates_and_draw(state_of_neuron, neuron_idx, layer_idx, 'red', True)
 
