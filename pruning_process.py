@@ -1,4 +1,3 @@
-
 import eqs_and_variables as ev
 import draw
 
@@ -32,24 +31,9 @@ def give_weights_back_to_the_pool(layer_obj, syn_obj, indices_of_synapses_with_m
             syn_obj.w[syn_idx] = 0
 
 
-def draw_after_pruning(layers, folder_path, synapse_objects):
-    draw.reset_board()
-    draw.draw_enabled_neurons(layers)
-    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
-
-    for layer_obj in layers:
-        layer_idx = layers.index(layer_obj)
-        for neuron_idx in range(ev.neuron_count):
-            draw.draw_current_state(layer_obj.v[neuron_idx], neuron_idx, layer_idx, 'white', False, synapse_objects[layer_idx])
-
-    draw.draw_outlines_layer_names_and_time(ev.run_time, folder_path, False)
-
-
 def pruning(layers, synapse_objects, folder_path):
     len_syn_objects = len(synapse_objects)
 
     for idx in range(0, len_syn_objects - 1):
         indices_of_synapses_with_min_weight = find_synapse_with_the_lowest_weight(synapse_objects[idx])
         give_weights_back_to_the_pool(layers[idx], synapse_objects[idx], indices_of_synapses_with_min_weight)
-
-    draw_after_pruning(layers, folder_path, synapse_objects)
