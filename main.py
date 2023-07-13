@@ -6,6 +6,7 @@ import save_simulation_setup_and_results as sssr
 import connection_of_synapses as cofs
 import eqs_and_variables as ev
 import synaptic_current as sc
+import pruning_process as pp
 import create_layers as cl
 import check_for_spikes as cs
 import weight_rule as wr
@@ -123,6 +124,8 @@ for element in ev.inputs[ev.input_shape]:
     input_layer.rates[element] = ev.firing_rate
 
 net.run(ev.run_time)
+
+pp.pruning(layers, synapse_objects, folder_path)
 
 end = time.time()
 
