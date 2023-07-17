@@ -1,14 +1,11 @@
 from brian2 import *
 
 # Simulation run t
-run_time = 9 * ms
+run_time = 11 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
 threshold = 15 / 1000
-
-# synaptic connection transmission_p
-syn_connection_prob = 1
 
 # beta
 beta = 0.91
@@ -37,6 +34,9 @@ initial_weights = 0
 
 # Synaptic transmission transmission_p
 transmission_p = 1
+
+# synaptic connection transmission probability
+syn_connection_prob = 1
 
 # pool_capacity represents weight pool capacity of neuron
 pool_capacity = 8
