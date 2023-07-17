@@ -82,7 +82,7 @@ for post_neuron_idx in range(ev.neuron_count):
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
 
 for element in ev.responses[ev.response_shape]:
-    layers[len(layers) - 1].flag[element] = True
+    layers[len(layers) - 1].is_enabled[element] = True
 
 
 @network_operation(when='after_end')

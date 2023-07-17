@@ -40,8 +40,8 @@ def get_state_of_neuron(voltage):
 def draw_enabled_neurons(layers):
     for layer_obj in layers:
         layer_idx = layers.index(layer_obj) + 1
-        for neuron_idx in range(len(layer_obj.flag)):
-            enabled_flag_of_neuron = layer_obj.flag[neuron_idx]
+        for neuron_idx in range(len(layer_obj.is_enabled)):
+            enabled_flag_of_neuron = layer_obj.is_enabled[neuron_idx]
             color = 'white' if enabled_flag_of_neuron else 'black'
             get_coordinates_and_draw(5, neuron_idx, layer_idx, color, True)
 

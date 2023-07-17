@@ -26,7 +26,7 @@ def set_enable_flags_for_rest(layer, post_neuron_indices, ng_row_count, ng_colum
         add_neuron_indices_to_enabled_neurons(layer_idx, enabled_neurons, pre_synaptic_indices)
 
         for pre_syn_idx in pre_synaptic_indices:
-            layer[layer_idx].flag[pre_syn_idx] = True
+            layer[layer_idx].is_enabled[pre_syn_idx] = True
 
     layer_idx -= 1
 
@@ -48,7 +48,7 @@ def set_target_neuron_flag(layers, enabled_neurons):
     add_neuron_indices_to_enabled_neurons(len(layers) - 2, enabled_neurons, target_neuron_idx)
 
     # Setting flag value of target neuron in layer_idx 5 to true.
-    layers[len(layers) - 2].flag[target_neuron_idx] = True
+    layers[len(layers) - 2].is_enabled[target_neuron_idx] = True
 
     return target_neuron_idx
 
