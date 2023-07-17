@@ -125,7 +125,7 @@ for element in ev.inputs[ev.input_shape]:
 
 net.run(ev.run_time)
 
-pp.pruning(layers, synapse_objects, folder_path)
+pp.pruning(layers, synapse_objects, folder_path, enabled_neurons, ev.inputs[ev.input_shape])
 
 end = time.time()
 
