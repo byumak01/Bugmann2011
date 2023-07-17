@@ -81,9 +81,13 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
     # We will add values inside results dictionary to correct places in neuron group objects.
     # I also draw state_of_neuron value of selected neuron.
     for key2 in results:
-        layers[key2[0]].total_current[key2[1]] = results[key2]
-        voltage = layers[key2[0]].v[key2[1]]
+        layer_idx = key2[0]
+        neuron_idx = key2[1]
+        layers[layer_idx].total_current[neuron_idx] = results[key2]
+        voltage = layers[layer_idx].v[neuron_idx]
+        layers[layer_idx].is_recruited[neuron_idx] = True if voltage != 0 else None
+        if_neuron_recruited = layers[layer_idx].is_recruited[neuron_idx]
         if t / ms % 10 == 0:
-            draw.draw_neuron_activity(voltage, key2[1], key2[0])
-            draw.draw_if_recruited(key2[1], key2[0] + 1)
+            draw.draw_neuron_activity(voltage, neuron_idx, layer_idx)
+            draw.draw_if_recruited(neuron_idx, layer_idx + 1)
             draw.draw_outlines_layer_names_and_time(t, folder_path)

@@ -79,7 +79,7 @@ for post_neuron_idx in range(ev.neuron_count):
                                    ev.rf_column_count, synapse_objects, ev.syn_connection_prob)
 
 # Giving initial values to synapse objects
-cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.probability)
+cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.transmission_p)
 
 for element in ev.responses[ev.response_shape]:
     layers[len(layers) - 1].is_enabled[element] = True

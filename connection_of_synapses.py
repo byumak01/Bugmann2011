@@ -4,10 +4,10 @@
 import receptive_field as rf
 
 
-def set_initial_variables(synapse_objects, initial_weights, probability):
+def set_initial_variables(synapse_objects, initial_weights, transmission_p):
     for synapse_obj in synapse_objects:
         synapse_obj.w = initial_weights
-        synapse_obj.p = probability
+        synapse_obj.transmission_p = transmission_p
 
 
 def make_synaptic_connections(post_neuron_idx, ng_row_count, ng_column_count, rf_row_count, rf_column_count,
