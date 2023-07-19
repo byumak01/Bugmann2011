@@ -20,7 +20,6 @@ def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
             NeuronGroup(neuron_count, neuron_eqs, threshold='v>v_th', reset='v = beta*v_th', method='euler',
                         refractory='refractory_period'))
         arr[i].w_pool = pool_capacity
-        arr[i].is_recruited = False
         arr[i].is_enabled = False
         arr[i].namespace['tau'] = ev.tau
         arr[i].namespace['v_th'] = ev.threshold

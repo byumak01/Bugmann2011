@@ -1,7 +1,7 @@
 from brian2 import *
 
 # Simulation run t
-run_time = 1001 * ms
+run_time = 21 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
@@ -92,7 +92,6 @@ w_pool : 1   # w_pool will be used for weight pool of neuron.
 total_current : 1 # Represents total synaptic current from article.
 fire_count : 1 # This variable is used for finding out how many times a neuron produced a spike.
 is_enabled : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
-is_recruited : boolean # If a neuron received spike during simulation this value will become True.
 '''
 
 # Defining necessary variables for Synapse object.
