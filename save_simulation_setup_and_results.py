@@ -1,4 +1,32 @@
+import matplotlib.pyplot as plt
+
 import eqs_and_variables as ev
+from brian2 import *
+import os
+
+
+def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder):
+    plt.figure(figure_num)
+    plt.plot(layer_mon[layer_idx].t / ms, layer_mon[layer_idx].v[neuron_idx], label='v', color='b')
+    plt.plot(layer_mon[layer_idx].t / ms, (layer_mon[layer_idx].total_current[neuron_idx]) / 400,
+             label='current', color='r', linestyle='dashed')
+    plt.title(f"Voltage Graph of {neuron_idx}. of {layer_idx}. layer")
+    xlabel('Time (ms)')
+    ylabel('v (volt)')
+    legend()
+    save_path = os.path.join(graphs_folder, f'layer{layer_idx}_neuron{neuron_idx}.png')
+    plt.savefig(save_path)
+    figure_num += 1
+
+
+def draw_neuron_state_graphs(folder_path, layer_mon, layers):
+    graphs_folder = os.path.join(folder_path, 'GRAPHS')
+    os.makedirs(graphs_folder, exist_ok=True)
+    figure_num = 0
+    for layer_idx in range(ev.layer_count):
+        for neuron_idx in range(ev.neuron_count):
+            if layers[layer_idx].received_spike_count[neuron_idx] > 0:
+                plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder)
 
 
 def save_simulation_setup_and_results(folder_path, execution_time):
@@ -38,4 +66,5 @@ def save_simulation_setup_and_results(folder_path, execution_time):
         file.write("t_max represents dendritic distance between the synapse and the soma.\n")
         file.write("dirac represents axonal propagation t between pre-synaptic neuron and synapse.\n")
         file.write("fraction shows how much of the pool will be given to the synapse which transmitted a spike.\n")
-        file.write("pool capacity shows how much weight a neuron has its disposal at the beginning of the simulation.\n")
+        file.write(
+            "pool capacity shows how much weight a neuron has its disposal at the beginning of the simulation.\n")

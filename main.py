@@ -22,7 +22,7 @@ start = time.time()
 # Creating path for saving results and variables used in simulation.
 current_date = datetime.datetime.now().strftime("%d%m%Y")
 simulation_start_time = datetime.datetime.now().strftime("%H%M")
-folder_path = f"RESULTS/{current_date}/ip{ev.input_shape}_dly{ev.delay/ms}_tp{ev.transmission_p}_fr{ev.fraction}_{simulation_start_time}"
+folder_path = f"RESULTS/{current_date}/{simulation_start_time}_ip{ev.input_shape}_dly{ev.delay / ms}_FR{ev.firing_rate / Hz}_tp{ev.transmission_p}_fr{ev.fraction}"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
@@ -113,8 +113,16 @@ def updater(t):
         wr.call_weight_update(wd_keys, weight_delay, layers, synapse_objects)
         # print("Current t", t)
         # print(synapse_objects[0].w)
+
+    # Check termination condition
+    termination_condition = True if layers[ev.layer_count - 2].fire_count[target_neuron_idx] > 0 else False
+
     # total_synaptic_current function will calculate total synaptic current for every neuron.
-    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map)
+    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map, termination_condition)
+
+    stop() if termination_condition else None
+
+    # Check termination condition
 
 
 # Arraylarin icinde tanimlanmis NG'leri vs. bu sekilde yapmak lazim !!!
@@ -132,8 +140,9 @@ end = time.time()
 
 elapsed_time = end - start
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
-print('Execution t:', elapsed_time, 'seconds')
+sssr.draw_neuron_state_graphs(folder_path, layer_mon)
 
+print('Execution t:', elapsed_time, 'seconds')
 
 print(input_layer_mon.i)
 print(input_layer_mon.t)
