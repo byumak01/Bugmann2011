@@ -16,7 +16,7 @@ def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder):
     legend()
     save_path = os.path.join(graphs_folder, f'layer{layer_idx}_neuron{neuron_idx}.png')
     plt.savefig(save_path)
-    figure_num += 1
+    return figure_num + 1
 
 
 def draw_neuron_state_graphs(folder_path, layer_mon, layers):
@@ -26,7 +26,8 @@ def draw_neuron_state_graphs(folder_path, layer_mon, layers):
     for layer_idx in range(ev.layer_count):
         for neuron_idx in range(ev.neuron_count):
             if layers[layer_idx].received_spike_count[neuron_idx] > 0:
-                plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder)
+                print(figure_num)
+                figure_num = plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder)
 
 
 def save_simulation_setup_and_results(folder_path, execution_time):

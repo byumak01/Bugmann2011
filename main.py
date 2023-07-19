@@ -140,7 +140,7 @@ end = time.time()
 
 elapsed_time = end - start
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
-sssr.draw_neuron_state_graphs(folder_path, layer_mon)
+sssr.draw_neuron_state_graphs(folder_path, layer_mon, layers)
 
 print('Execution t:', elapsed_time, 'seconds')
 
