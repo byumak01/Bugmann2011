@@ -1,7 +1,7 @@
 from brian2 import *
 
 # Simulation run t
-run_time = 11 * ms
+run_time = 1001 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
@@ -14,26 +14,26 @@ beta = 0.91
 tau = 50 * ms
 
 # t_max represents dendritic distance between synapse_obj and soma.
-t_max = 1.0 * ms
+t_max = 1 * ms
 
 # dirac represents axonal propagation t between the pre-synaptic neuron and synapse_obj.
-dirac = 1.0 * ms
+dirac = 1 * ms
 
 # fraction represents how much of the pool will be taken. (Takes values between 0 and 1).
 # If fraction is 1, then it takes all the pool.
 fraction = 0.8
 
 # delay represents how much t needs to pass until new synaptic weights become active after a spike arrives.
-delay = 2.0 * ms
+delay = 2 * ms
 
 # Refractory period.
-refractory_period = 2.0 * ms
+refractory_period = 2 * ms
 
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
 
 # Synaptic transmission transmission_p
-transmission_p = 1
+transmission_p = 0.5
 
 # synaptic connection transmission probability
 syn_connection_prob = 1

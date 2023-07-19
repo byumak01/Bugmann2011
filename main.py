@@ -20,8 +20,9 @@ import os
 start = time.time()
 
 # Creating path for saving results and variables used in simulation.
-current_date = datetime.datetime.now().strftime("%d%m%Y_%H%M")
-folder_path = f"RESULTS/{ev.input_shape}_{current_date}"
+current_date = datetime.datetime.now().strftime("%d%m%Y")
+simulation_start_time = datetime.datetime.now().strftime("%H%M")
+folder_path = f"RESULTS/{current_date}/ip{ev.input_shape}_dly{ev.delay/ms}_tp{ev.transmission_p}_fr{ev.fraction}_{simulation_start_time}"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
@@ -125,7 +126,7 @@ for element in ev.inputs[ev.input_shape]:
 
 net.run(ev.run_time)
 
-pp.pruning(layers, synapse_objects, folder_path, enabled_neurons, ev.inputs[ev.input_shape])
+# pp.pruning(layers, synapse_objects, folder_path, enabled_neurons, ev.inputs[ev.input_shape])
 
 end = time.time()
 
