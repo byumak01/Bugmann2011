@@ -8,13 +8,14 @@ import os
 def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder):
     plt.figure(figure_num)
     plt.plot(layer_mon[layer_idx].t / ms, layer_mon[layer_idx].v[neuron_idx], label='v', color='b')
-    plt.plot(layer_mon[layer_idx].t / ms, (layer_mon[layer_idx].total_current[neuron_idx]) / 400,
+    plt.plot(layer_mon[layer_idx].t / ms, (layer_mon[layer_idx].total_current[neuron_idx]) / 1000,
              label='current', color='r', linestyle='dashed')
-    plt.title(f"Voltage Graph of {neuron_idx}. of {layer_idx}. layer")
+    plt.title(f"Voltage Graph of {neuron_idx}. of {layer_idx + 1}. layer")
+    plt.axhline(y=ev.threshold, color='y', linestyle='--', label=f'Threshold level')
     xlabel('Time (ms)')
     ylabel('v (volt)')
     legend()
-    save_path = os.path.join(graphs_folder, f'layer{layer_idx}_neuron{neuron_idx}.png')
+    save_path = os.path.join(graphs_folder, f'layer{layer_idx + 1}_neuron{neuron_idx}.png')
     plt.savefig(save_path)
     return figure_num + 1
 
@@ -25,8 +26,7 @@ def draw_neuron_state_graphs(folder_path, layer_mon, layers):
     figure_num = 0
     for layer_idx in range(ev.layer_count):
         for neuron_idx in range(ev.neuron_count):
-            if layers[layer_idx].received_spike_count[neuron_idx] > 0:
-                print(figure_num)
+            if layers[layer_idx].v[neuron_idx] != 0:
                 figure_num = plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder)
 
 

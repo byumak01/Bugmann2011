@@ -1,7 +1,7 @@
 from brian2 import *
 
 # Simulation run t
-run_time = 11 * ms
+run_time = 51 * ms
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
@@ -33,7 +33,7 @@ refractory_period = 2 * ms
 initial_weights = 0
 
 # Synaptic transmission transmission_p
-transmission_p = 0.5
+transmission_p = 1
 
 # synaptic connection transmission probability
 syn_connection_prob = 1
@@ -92,7 +92,6 @@ w_pool : 1   # w_pool will be used for weight pool of neuron.
 total_current : 1 # Represents total synaptic current from article.
 fire_count : 1 # This variable is used for finding out how many times a neuron produced a spike.
 is_enabled : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
-received_spike_count : integer
 '''
 
 # Defining necessary variables for Synapse object.
@@ -107,7 +106,6 @@ transmission_p : 1 # Will represent transmission_p.
 on_pre_arg = '''
 spike_fired = True*is_enabled*(rand() < transmission_p)
 spike_time = t
-received_spike_count += 1
 '''
 
 # Defining necessary arguments to execute when post-synaptic spike is fired.
