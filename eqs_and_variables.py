@@ -93,7 +93,7 @@ neuron_eqs = '''
 dv/dt = -(v/(tau)) + total_current*Hz : 1 # Equation 1 from article.
 w_pool : 1   # w_pool will be used for weight pool of neuron.
 total_current : 1 # Represents total synaptic current from article.
-fire_count : 1 # This variable is used for finding out how many times a neuron produced a spike.
+fire_count : integer # This variable is used for finding out how many times a neuron produced a spike.
 is_enabled : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
 received_spike_count : integer
 '''
@@ -114,7 +114,7 @@ spike_time = t
 
 # Defining necessary arguments to execute when post-synaptic spike is fired.
 on_post_arg = '''
-fire_count += 1/N_incoming  # When a post-synaptic neuron fires a spike this equation will increase the fire_count by 1 for the neuron that fired spike.
+
 '''
 # NOTE ABOUT fire_count variable: I could also do this incrementation in on_pre arguments but then I would not be able to increment this value for Response layer_idx neurons.
 # Because Response layer_idx is not in a position as pre-synaptic variable in any of the Synapse objects.

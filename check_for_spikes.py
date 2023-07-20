@@ -67,6 +67,9 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
         # Increase received spike count for neurons which received spikes.
         post_neuron_idx = synapse_obj.j[w_index]
         layers[syn_obj_idx].received_spike_count[post_neuron_idx] += 1
+        # Increase fired spike count for neurons which fired spikes.
+        pre_neuron_idx = synapse_obj.i[w_index]
+        layers[syn_obj_idx - 1].fire_count[pre_neuron_idx] += 1 if syn_obj_idx != 0 else 0
         # If any spikes are received, the indexes would be assigned to w_index variable, so the condition below will
         # be True
         if len(w_index) > 0:
