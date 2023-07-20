@@ -82,6 +82,8 @@ for post_neuron_idx in range(ev.neuron_count):
 # Giving initial values to synapse objects
 cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.transmission_p)
 
+# syn_mon = cl.create_synapse_mon(synapse_objects)
+
 for element in ev.responses[ev.response_shape]:
     layers[len(layers) - 1].is_enabled[element] = True
 
@@ -101,7 +103,7 @@ def updater(t):
     # spike_times = {} declaration inside synaptic_current.py
     # Also indexes of synapses which received a spike will be stored inside a dictionary. When delay t is passed,
     # weight update function will be called by using information stored in this dictionary and weights will be updated.
-    cs.check_any_spikes(t, synapse_objects, weight_delay, spike_times)
+    cs.check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers)
 
     # check_if_delay_time_passed function will check if any weights needs to be updated at current t step.
     # If there are any weights that needs to be updated key to reach that synaptic indexes is returned.
@@ -151,9 +153,13 @@ print(synapse_objects[0].w)
 print(len(layers))
 """
 
-print(layers[0].fire_count)
-print(layers[1].fire_count)
-print(layers[2].fire_count)
-print(layers[3].fire_count)
-print(layers[4].fire_count)
-print(layers[5].fire_count)
+for idx in ev.rf_array[46]:
+    print("i:", idx, "j:46 ", "w:", synapse_objects[1].w[idx, 46])
+    print("i:46", "j:", idx, " w:", synapse_objects[2].w[46, idx])
+
+# print(layers[0].fire_count)
+# print(layers[1].fire_count)
+# print(layers[2].fire_count)
+# print(layers[3].fire_count)
+# print(layers[4].fire_count)
+# print(layers[5].fire_count)

@@ -5,12 +5,12 @@ from brian2 import *
 import os
 
 
-def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder):
+def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder, received_spike_count):
     plt.figure(figure_num)
     plt.plot(layer_mon[layer_idx].t / ms, layer_mon[layer_idx].v[neuron_idx], label='v', color='b')
     plt.plot(layer_mon[layer_idx].t / ms, (layer_mon[layer_idx].total_current[neuron_idx]) / 1000,
              label='current', color='r', linestyle='dashed')
-    plt.title(f"Voltage Graph of {neuron_idx}. of {layer_idx + 1}. layer")
+    plt.title(f"Voltage Graph of {neuron_idx}. of {layer_idx + 1}. layer RS = {received_spike_count}")
     plt.axhline(y=ev.threshold, color='y', linestyle='--', label=f'Threshold level')
     xlabel('Time (ms)')
     ylabel('v (volt)')
@@ -27,7 +27,9 @@ def draw_neuron_state_graphs(folder_path, layer_mon, layers):
     for layer_idx in range(ev.layer_count):
         for neuron_idx in range(ev.neuron_count):
             if layers[layer_idx].v[neuron_idx] != 0:
-                figure_num = plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder)
+                received_spike_count = layers[layer_idx].received_spike_count[neuron_idx]
+                figure_num = plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder,
+                                        received_spike_count)
 
 
 def save_simulation_setup_and_results(folder_path, execution_time):

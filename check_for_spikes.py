@@ -51,7 +51,7 @@ def check_synapses(synapse_obj):
 
 
 # This function will check if any spikes fired.
-def check_any_spikes(t, synapse_objects, weight_delay, spike_times):
+def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
     # The for loop will let us iterate over all synapse_obj objects.
     for synapse_obj in synapse_objects:
         # I store the index of Synapse object inside a variable.
@@ -64,6 +64,9 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times):
         # draw_firing_neurons_in_stimulus_layer will draw firing neurons in stimulus layer if any.
         draw.draw_firing_neurons_in_stimulus_layer(
             synapse_obj.i[w_index]) if syn_obj_idx == 0 and t / ms % 10 == 0 else None
+        # Increase received spike count for neurons which received spikes.
+        post_neuron_idx = synapse_obj.j[w_index]
+        layers[syn_obj_idx].received_spike_count[post_neuron_idx] += 1
         # If any spikes are received, the indexes would be assigned to w_index variable, so the condition below will
         # be True
         if len(w_index) > 0:

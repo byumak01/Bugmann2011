@@ -69,6 +69,9 @@ rf_column_count = 5
 # input shape
 input_shape = 'A'
 
+# rf array will be used in weight updates
+rf_array = []
+
 # response shape
 response_shape = 'RIGHT_HAND'
 
@@ -92,6 +95,7 @@ w_pool : 1   # w_pool will be used for weight pool of neuron.
 total_current : 1 # Represents total synaptic current from article.
 fire_count : 1 # This variable is used for finding out how many times a neuron produced a spike.
 is_enabled : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
+received_spike_count : integer
 '''
 
 # Defining necessary variables for Synapse object.

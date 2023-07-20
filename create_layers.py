@@ -21,6 +21,7 @@ def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
                         refractory='refractory_period'))
         arr[i].w_pool = pool_capacity
         arr[i].is_enabled = False
+        arr[i].received_spike_count = 0
         arr[i].namespace['tau'] = ev.tau
         arr[i].namespace['v_th'] = ev.threshold
         arr[i].namespace['beta'] = ev.beta
@@ -51,5 +52,11 @@ def create_synapse_objects(syn_eqs, layers, input_layer, on_pre_arg, on_post_arg
     for i in range(0, hidden_layers_len - 1):
         arr.append(Synapses(layers[i], layers[i + 1], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg))
 
+    return arr
 
+
+def create_synapse_mon(synapse_objects):
+    arr = []
+    for syn_obj in synapse_objects:
+        arr.append(StateMonitor(syn_obj, 'w', record=True))
     return arr
