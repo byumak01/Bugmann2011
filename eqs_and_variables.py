@@ -1,6 +1,7 @@
 from brian2 import *
 
-# Simulation run t
+# Simulation run time
+# If u want to run simulation for 100 second please select runtime as 101 ms so code can draw the situation at 100 ms.
 run_time = 51 * ms
 
 # Initializing variables.
@@ -10,13 +11,13 @@ threshold = 15 / 1000
 # beta
 beta = 0.91
 
-# tau represents RC t constant.
+# tau represents RC time constant.
 tau = 50 * ms
 
-# t_max represents dendritic distance between synapse_obj and soma.
+# t_max represents dendritic distance between synapse and soma.
 t_max = 1 * ms
 
-# dirac represents axonal propagation t between the pre-synaptic neuron and synapse_obj.
+# dirac represents axonal propagation t between the pre-synaptic neuron and synapse.
 dirac = 1 * ms
 
 # fraction represents how much of the pool will be taken. (Takes values between 0 and 1).
@@ -32,10 +33,10 @@ refractory_period = 2 * ms
 # initial_weights represents initial synaptic weights.
 initial_weights = 0
 
-# Synaptic transmission transmission_p
+# Synaptic transmission probability
 transmission_p = 1
 
-# synaptic connection transmission probability
+# synaptic connection probability
 syn_connection_prob = 1
 
 # pool_capacity represents weight pool capacity of neuron
@@ -48,6 +49,7 @@ firing_rate = 100 * Hz
 initial_firing_rate = 0 * Hz
 
 # layer_count represents how many hidden layers will be in simulation.
+# If layer count is 6 that means 5 hidden layers and 1 response layer.
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
 layer_count = 6
 
@@ -60,19 +62,19 @@ ng_row_count = 10
 # column count
 ng_column_count = 10
 
-# rf row count
+# rf row count   (rf means receptive field)
 rf_row_count = 5
 
 # rf column count
 rf_column_count = 5
 
-# input shape
+# input shape make it 'A' or 'B' or 'C' or 'D'
 input_shape = 'A'
 
 # rf array will be used in weight updates
 rf_array = []
 
-# response shape
+# response shape 'RIGHT_HAND' or 'LEFT_HAND'
 response_shape = 'RIGHT_HAND'
 
 responses = {'RIGHT_HAND': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
@@ -103,10 +105,22 @@ syn_eqs = '''
 w : 1 # w represents the weights.
 spike_fired : boolean # Becomes true if pre-synaptic neuron fired a spike, variable is used to determine which synapse_obj transmitted the spike.
 spike_time : second # Records the firing t.
-transmission_p : 1 # Will represent transmission_p.
+transmission_p : 1 # Will represent transmission probability.
 '''
 
 # Defining necessary arguments to execute when a pre-synaptic spike is fired.
+# spike_fired = True*is_enabled*(rand() < transmission_p)
+# The line above provides us a way for saving spike times for only neurons that are enabled and transmitted
+# (If there is a transmission probability).
+# It works like following:
+# Lets say a neuron fired spike, that means one_pre_arg will be activated for the synapse between pre and post
+# synaptic neuron.
+# spike_fired variable will only be True if the neuron is enabled and the random number which is created by rand()
+# is smaller than transmission probability. If transmission probability is 1 it will always be true, so the condition
+# for spike_fired to be true will only depend on if neuron is enabled or not.
+# If spike_fired variable does not take "True" value at the end we do not save spike time for that spike.
+# This way the neurons which are not enabled will not take spike. Also, we are able to add a mechanism for making
+# spike transmission probabilistic.
 on_pre_arg = '''
 spike_fired = True*is_enabled*(rand() < transmission_p)
 spike_time = t
@@ -116,10 +130,3 @@ spike_time = t
 on_post_arg = '''
 
 '''
-# NOTE ABOUT fire_count variable: I could also do this incrementation in on_pre arguments but then I would not be able to increment this value for Response layer_idx neurons.
-# Because Response layer_idx is not in a position as pre-synaptic variable in any of the Synapse objects.
-
-# ANOTHER NOTE ABOUT fire_count variable: In the on_post_argument when I am incrementing fire_count I am dividing 1 by N_incoming.
-# The reason for that is, when because of the definition of Brian's on_post argument, it will increment the value for every synapse_obj that is connected to post-synaptic neuron.
-# Let's say there are 5 synapses connected to a post-synaptic neuron. If I define " fire_count += 1 " in on_post argument, it WILL NOT increment fire_count value by 1.
-# Instead of that it will increment it by 5, but I want to increment it by 1. So I divided 1 by N_incoming so that in the end variable will be incremented by 1.
