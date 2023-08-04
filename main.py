@@ -35,8 +35,8 @@ hash_map = sc.create_hash_map_for_alpha_function()
 # first synapse object.
 spike_times = ev.create_dictionary()
 
-# Create a dictionary for holding weight until delay t is passed.
-# Key for this dictionary is the t and index of Synapse OBJECT which received a spike.
+# Create a dictionary for holding weight until delay time is passed.
+# Key for this dictionary is the time and index of Synapse OBJECT which received a spike.
 # For example if a spike came at 20. ms, a key will be created and its first value will be 20 + delay and second
 # value will be the index of synapse that transmitted spike.
 weight_delay = ev.create_dictionary()
@@ -78,7 +78,7 @@ for post_neuron_idx in range(ev.neuron_count):
                                    ev.rf_column_count, synapse_objects, ev.syn_connection_prob)
 
 # Giving initial values to synapse objects
-cofs.set_initial_variables(synapse_objects, ev.initial_weights, ev.transmission_p)
+cofs.set_initial_values(synapse_objects, ev.initial_weights, ev.transmission_p)
 
 # Defining a monitor for synapse objects
 # syn_mon = cl.create_synapse_mon(synapse_objects)

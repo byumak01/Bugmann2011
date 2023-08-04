@@ -20,6 +20,7 @@ def plot_graph(figure_num, layer_mon, layer_idx, neuron_idx, graphs_folder, rece
     return figure_num + 1
 
 
+# Every neuron's voltage level change during simulation is saved inside a file "GRAPHS" by this function.
 def draw_neuron_state_graphs(folder_path, layer_mon, layers):
     graphs_folder = os.path.join(folder_path, 'GRAPHS')
     os.makedirs(graphs_folder, exist_ok=True)
@@ -32,6 +33,7 @@ def draw_neuron_state_graphs(folder_path, layer_mon, layers):
                                         received_spike_count)
 
 
+# Saving information like used setup, execution time etc. inside a .txt file.
 def save_simulation_setup_and_results(folder_path, execution_time):
     file_path = f"{folder_path}/used_setup_and_results.txt"
     with open(file_path, "w") as file:

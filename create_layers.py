@@ -10,8 +10,8 @@ def create_poisson_group(neuron_count, firing_rate):
 
 
 # create_hidden_layers function creates an array which consists ever.
-# IMPORTANT: Every hidden layer_idx will use same equations and will have same number of neurons.
-# IMPORTANT: Simulation must have at least 1 hidden layer_idx.
+# IMPORTANT: Every hidden layer will use same equations and will have same number of neurons.
+# IMPORTANT: Simulation must have at least 1 hidden layer.
 # In other words you can not directly connect input_layer to response_layer with this code structure.
 def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
     arr = []
@@ -44,17 +44,17 @@ def create_layer_mon(layers):
 def create_synapse_objects(syn_eqs, layers, input_layer, on_pre_arg, on_post_arg):
     hidden_layers_len = len(layers)
     # First I connect input_layer with first hidden_layer,
-    # since input_layer is not in the same list with hidden layers I do that separately.
+    # since input layer is not in the same list with hidden layers I do that separately.
     arr = [Synapses(input_layer, layers[0], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg)]
 
-    # Then I connect other hidden layers here. Every hidden layer_idx is connected to next hidden layer_idx in the list.
-    # For example hidden layer_idx 2 is connected to hidden layer_idx 3 and hidden layer_idx 3 is connected to hidden layer_idx 4.
+    # Then I connect other layers here. Every hidden layer is connected to next layer in the list.
+    # For example layer 2 is connected to layer 3 and layer 3 is connected to layer 4.
     for i in range(0, hidden_layers_len - 1):
         arr.append(Synapses(layers[i], layers[i + 1], model=syn_eqs, on_pre=on_pre_arg, on_post=on_post_arg))
-
     return arr
 
 
+# Creating a monitor for every synapse object to be able to monitor changes on synaptic weights.
 def create_synapse_mon(synapse_objects):
     arr = []
     for syn_obj in synapse_objects:
