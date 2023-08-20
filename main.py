@@ -14,6 +14,7 @@ import time
 import draw
 import datetime
 import os
+import pruning as pr
 
 # Starting time to calculate how much time it takes to run simulation.
 start = time.time()
@@ -134,12 +135,20 @@ for element in ev.inputs[ev.input_shape]:
 
 # Running simulation.
 net.run(ev.run_time)
+arr = synapse_objects[2].w[46,:]
+for i in range(len(synapse_objects[2].w[46,:])):
+    print("before:", arr[i])
+pr.pruning(layers, synapse_objects, folder_path)
+
+arr = synapse_objects[2].w[46,:]
+for i in range(len(synapse_objects[2].w[46,:])):
+    print("after:", arr[i])
 
 end = time.time()
 
 elapsed_time = end - start
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
-sssr.draw_neuron_state_graphs(folder_path, layer_mon, layers)
+# sssr.draw_neuron_state_graphs(folder_path, layer_mon, layers)
 
 print('Execution t:', elapsed_time, 'seconds')
 
@@ -150,9 +159,7 @@ print(synapse_objects[0].w)
 print(len(layers))
 """
 
-for idx in ev.rf_array[46]:
-    print("i:", idx, "j:46 ", "w:", synapse_objects[1].w[idx, 46])
-    print("i:46", "j:", idx, " w:", synapse_objects[2].w[46, idx])
+
 
 # print(layers[0].fire_count)
 # print(layers[1].fire_count)
