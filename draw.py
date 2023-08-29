@@ -7,13 +7,13 @@ width = 15 * ev.layer_count * ev.ng_column_count
 height = 21 * ev.ng_row_count + 70
 
 image = Image.new('RGBA', (width, height), 'black')
-draw = ImageDraw.Draw(image)
+dr = ImageDraw.Draw(image)
 font = ImageFont.truetype("arial.ttf", 16)
 
 
-# reset_board function resets the board so that we can draw the current state.
+# reset_board function resets the board so that we can dr the current state.
 def reset_board():
-    draw.rectangle([(0, 0), ((width), (height))], fill='black')
+    dr.rectangle([(0, 0), ((width), (height))], fill='black')
 
 
 # draw_recruited_neuron function makes recruited neurons red.
@@ -65,7 +65,7 @@ def draw_neuron_activity(voltage, neuron_idx, layer_idx):
 
 
 def draw_given_coordinates(x1, y1, x2, y2, color):
-    draw.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
+    dr.rectangle([(x1, y1), (x2, y2)], fill=f'{color}')
 
 
 def get_layer_names_for_upper_grid(layer_idx):
@@ -90,11 +90,11 @@ def print_layer_names(x1, y1, layer_idx, flag):
     else:
         layer_name = get_layer_names_for_upper_grid(layer_idx)
 
-    draw.text((x1 + 15, y1 - 22), layer_name, fill='white', font=font)
+    dr.text((x1 + 15, y1 - 22), layer_name, fill='white', font=font)
 
 
 def print_time(t, x1, y1):
-    draw.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
+    dr.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
 
 
 def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
@@ -111,12 +111,12 @@ def draw_outlines_layer_names_and_time(t, folder_path):
     for layer_idx in range(ev.layer_count + 1):
         for neuron_idx in range(ev.neuron_count):
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, False)
-            draw.rectangle([(x1, y1), (x2, y2)], outline='gray')
+            dr.rectangle([(x1, y1), (x2, y2)], outline='gray')
             print_layer_names(x1, y1, layer_idx, False) if neuron_idx == 0 else None
 
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, True)
             print_time(t, x1, y1) if neuron_idx == 0 and layer_idx == 0 else None
-            draw.rectangle([(x1, y1), (x2, y2)], outline='gray') if layer_idx != 0 else None
+            dr.rectangle([(x1, y1), (x2, y2)], outline='gray') if layer_idx != 0 else None
             print_layer_names(x1, y1, layer_idx, True) if layer_idx != 0 and neuron_idx == 0 else None
 
     image_name = f"{folder_path}/{t / ms}.png"

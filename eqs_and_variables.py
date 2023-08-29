@@ -105,6 +105,7 @@ syn_eqs = '''
 w : 1 # w represents the weights.
 spike_fired : boolean # Becomes true if pre-synaptic neuron fired a spike, variable is used to determine which synapse_obj transmitted the spike.
 spike_time : second # Records the firing t.
+is_selected : boolean # True if neuron is selected after pruning.
 transmission_p : 1 # Will represent transmission probability.
 '''
 
