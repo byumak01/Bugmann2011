@@ -2,7 +2,13 @@ from brian2 import *
 
 # Simulation run time
 # If u want to run simulation for 100 second please select runtime as 101 ms so code can draw the situation at 100 ms.
-run_time = 51 * ms
+run_time = 101 * ms
+
+run_counter = 0
+
+number_of_runs = 2
+
+selected_synapses = {}
 
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.

@@ -75,12 +75,6 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
             # We first make spike_fired variable False again for all synapses so that when we receive a new spike
             # we can understand it.
             synapse_obj.spike_fired[syn_indices] = False
-
-            # Creating key for weight_delay dictionary.
-            create_key_for_weight_delay(t, syn_obj_idx, weight_delay)
-            # Adding indexes of synapses which received a spike to value side of created key.
-            add_indexes_to_weight_delay(t, syn_obj_idx, weight_delay, syn_indices)
-
             # Now we will iterate over syn_indices to put every spike t correct places in our dictionary named as
             # spike_times.
             for syn_idx in syn_indices:
@@ -93,3 +87,18 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
                     # and then append the spike t to there.
                     create_key_for_spike_times(syn_obj_idx, syn_idx, spike_times)
                     add_spike_time(synapse_obj, syn_obj_idx, syn_idx, spike_times)
+
+            idx = 0
+            range = len(syn_indices)
+            while idx < range:
+                syn_idx = syn_indices[idx]
+                if synapse_obj.is_selected[syn_idx]:
+                    del syn_indices[idx]
+                    range -= 1
+                idx += 1
+
+            if len(syn_indices) > 0:
+                # Creating key for weight_delay dictionary.
+                create_key_for_weight_delay(t, syn_obj_idx, weight_delay)
+                # Adding indexes of synapses which received a spike to value side of created key.
+                add_indexes_to_weight_delay(t, syn_obj_idx, weight_delay, syn_indices)

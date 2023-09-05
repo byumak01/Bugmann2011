@@ -107,7 +107,7 @@ def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
         get_coordinates_and_draw(5, idx, 0, 'white', False)
 
 
-def draw_outlines_layer_names_and_time(t, folder_path):
+def draw_outlines_layer_names_and_time(t, folder_path, pruning, run_count):
     for layer_idx in range(ev.layer_count + 1):
         for neuron_idx in range(ev.neuron_count):
             x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, False)
@@ -119,5 +119,6 @@ def draw_outlines_layer_names_and_time(t, folder_path):
             dr.rectangle([(x1, y1), (x2, y2)], outline='gray') if layer_idx != 0 else None
             print_layer_names(x1, y1, layer_idx, True) if layer_idx != 0 and neuron_idx == 0 else None
 
-    image_name = f"{folder_path}/{t / ms}.png"
+    name = t/ms if not pruning else f"pruning_{run_count + 1}"
+    image_name = f"{folder_path}/{name}.png"
     image.save(image_name, "PNG")

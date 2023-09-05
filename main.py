@@ -2,6 +2,7 @@
 # 12/06/2023  01.36
 
 from brian2 import *
+import reset_simulation as rs
 import save_simulation_setup_and_results as sssr
 import connection_of_synapses as cofs
 import eqs_and_variables as ev
@@ -122,8 +123,16 @@ def updater(t):
     # total_synaptic_current function will calculate total synaptic current for every neuron.
     sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map, termination_condition)
 
-    # STOPS THE SIMULATION IF THE TERMINATION CONDITION IS TRUE
-    stop() if termination_condition else None
+    # Executes Pruning if termination condition is True
+    if termination_condition:
+        termination_condition = False
+        pr.pruning(layers, synapse_objects, folder_path, True, ev.run_counter)
+        ev.run_counter += 1
+        rs.reset_simulation(layers, weight_delay, spike_times)
+        print(weight_delay)
+        print(termination_condition)
+
+    stop() if ev.run_counter == ev.number_of_runs else None
 
 
 net = Network(collect())
@@ -135,14 +144,14 @@ for element in ev.inputs[ev.input_shape]:
 
 # Running simulation.
 net.run(ev.run_time)
-arr = synapse_objects[2].w[46,:]
-for i in range(len(synapse_objects[2].w[46,:])):
-    print("before:", arr[i])
-pr.pruning(layers, synapse_objects, folder_path)
+# arr = synapse_objects[2].w[46,:]
+# for i in range(len(synapse_objects[2].w[46,:])):
+# print("before:", arr[i])
 
-arr = synapse_objects[2].w[46,:]
-for i in range(len(synapse_objects[2].w[46,:])):
-    print("after:", arr[i])
+
+# arr = synapse_objects[2].w[46,:]
+# for i in range(len(synapse_objects[2].w[46,:])):
+# print("after:", arr[i])
 
 end = time.time()
 
@@ -154,16 +163,3 @@ print('Execution t:', elapsed_time, 'seconds')
 
 print(input_layer_mon.i)
 print(input_layer_mon.t)
-"""
-print(synapse_objects[0].w)
-print(len(layers))
-"""
-
-
-
-# print(layers[0].fire_count)
-# print(layers[1].fire_count)
-# print(layers[2].fire_count)
-# print(layers[3].fire_count)
-# print(layers[4].fire_count)
-# print(layers[5].fire_count)

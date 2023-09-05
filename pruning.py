@@ -6,7 +6,8 @@ import draw
 def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selected_synapse_idx):
     key = (layer_obj_idx, neuron_idx)
     # selected synapse idx is a tuple i,j
-    selected_synapses[key] = selected_synapse_idx
+    selected_synapses[key] = []
+    selected_synapses[key].append(selected_synapse_idx)
 
 
 # spesifik bir norondan cikan butun agirliklari yazdir yaptigi secimi kontrol et
@@ -43,17 +44,17 @@ def give_weights_back_to_pool(syn_obj, layer_obj):
             syn_obj.w[idx] = 0
 
 
-def draw_after_pruning_state(selected_synapses, synapse_objects):
+def draw_after_pruning_state(selected_synapses):
     # key -1 var unutma
     for ky in selected_synapses:
-        obj_idx = ky[0] + 1
-        neuron_idx = selected_synapses[ky][1]
-        draw.draw_neuron_activity(ev.threshold, neuron_idx, obj_idx)
+        for idx_pair in selected_synapses[ky]:
+            obj_idx = ky[0] + 1
+            neuron_idx = idx_pair[1]
+            draw.draw_neuron_activity(ev.threshold, neuron_idx, obj_idx)
 
 
-def pruning(layers, synapse_objects, folder_path):
+def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):
     len_syn_objects = len(synapse_objects)
-    selected_synapses = {}
     selected_neuron_indices = ev.inputs[ev.input_shape]
     for idx in range(0, len_syn_objects - 1):
         hold_indices = []
@@ -62,12 +63,11 @@ def pruning(layers, synapse_objects, folder_path):
                                                                   selected_neuron_idx)
 
             hold_indices.append(selected_neuron_idx)
-            selected_synapses.update(dct)
+            ev.selected_synapses.update(dct)
         give_weights_back_to_pool(synapse_objects[idx], layers[idx])
         selected_neuron_indices = hold_indices
 
     draw.reset_board()
     draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
-    print(selected_synapses)
-    draw_after_pruning_state(selected_synapses, synapse_objects)
-    draw.draw_outlines_layer_names_and_time(ev.run_time + 1 * ms, folder_path)
+    draw_after_pruning_state(ev.selected_synapses)
+    draw.draw_outlines_layer_names_and_time(ev.run_time + 1 * ms, folder_path, is_pruning, run_count)
