@@ -5,8 +5,9 @@ import draw
 
 def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selected_synapse_idx):
     key = (layer_obj_idx, neuron_idx)
+    if key not in selected_synapses:
+        selected_synapses[key] = []
     # selected synapse idx is a tuple i,j
-    selected_synapses[key] = []
     selected_synapses[key].append(selected_synapse_idx)
 
 
@@ -46,6 +47,7 @@ def give_weights_back_to_pool(syn_obj, layer_obj):
 
 def draw_after_pruning_state(selected_synapses):
     # key -1 var unutma
+    print(selected_synapses)
     for ky in selected_synapses:
         for idx_pair in selected_synapses[ky]:
             obj_idx = ky[0] + 1

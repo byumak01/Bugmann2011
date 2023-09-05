@@ -10,6 +10,8 @@ number_of_runs = 2
 
 selected_synapses = {}
 
+termination_condition = False
+
 # Initializing variables.
 # threshold represents threshold value for post-synaptic neuron.
 threshold = 15 / 1000

@@ -118,19 +118,17 @@ def updater(t):
 
     # Check termination condition
     # SIMULATION IS TERMINATED IF THE NEURON IN LAYER 5 STARTS FIRING.
-    termination_condition = True if layers[ev.layer_count - 2].fire_count[target_neuron_idx] > 0 else False
+    ev.termination_condition = True if layers[ev.layer_count - 2].fire_count[target_neuron_idx] > 0 else False
 
     # total_synaptic_current function will calculate total synaptic current for every neuron.
-    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map, termination_condition)
+    sc.total_synaptic_current(t, spike_times, layers, synapse_objects, folder_path, hash_map, ev.termination_condition)
 
     # Executes Pruning if termination condition is True
-    if termination_condition:
-        termination_condition = False
+    if ev.termination_condition:
+        ev.termination_condition = False
         pr.pruning(layers, synapse_objects, folder_path, True, ev.run_counter)
         ev.run_counter += 1
         rs.reset_simulation(layers, weight_delay, spike_times)
-        print(weight_delay)
-        print(termination_condition)
 
     stop() if ev.run_counter == ev.number_of_runs else None
 
