@@ -142,14 +142,6 @@ for element in ev.inputs[ev.input_shape]:
 
 # Running simulation.
 net.run(ev.run_time)
-# arr = synapse_objects[2].w[46,:]
-# for i in range(len(synapse_objects[2].w[46,:])):
-# print("before:", arr[i])
-
-
-# arr = synapse_objects[2].w[46,:]
-# for i in range(len(synapse_objects[2].w[46,:])):
-# print("after:", arr[i])
 
 end = time.time()
 
