@@ -2,11 +2,11 @@ from brian2 import *
 
 # Simulation run time
 # If u want to run simulation for 100 second please select runtime as 101 ms so code can draw the situation at 100 ms.
-run_time = 101 * ms
+run_time = 501 * ms
 
 run_counter = 0
 
-number_of_runs = 2
+number_of_runs = 3
 
 selected_synapses = {}
 
