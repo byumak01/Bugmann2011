@@ -44,8 +44,10 @@ def add_spike_time(synapse_obj, syn_obj_idx, syn_idx, spike_times):
 def check_synapses(synapse_obj):
     arr = []
     for idx in range(len(synapse_obj.spike_fired)):
+        # Adding transmission probability:
         if synapse_obj.spike_fired[idx]:
-            arr.append(idx)
+            if rand() < ev.transmission_p:
+                arr.append(idx)
     return arr
 
 
@@ -90,6 +92,7 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
 
             idx = 0
             range = len(syn_indices)
+            # If neuron is selected do not change the weight.
             while idx < range:
                 syn_idx = syn_indices[idx]
                 if synapse_obj.is_selected[syn_idx]:

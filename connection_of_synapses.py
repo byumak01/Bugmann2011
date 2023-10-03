@@ -9,7 +9,6 @@ import eqs_and_variables as ev
 def set_initial_values(synapse_objects, initial_weights, transmission_p):
     for synapse_obj in synapse_objects:
         synapse_obj.w = initial_weights
-        synapse_obj.transmission_p = transmission_p
         synapse_obj.is_selected = False
 
 
