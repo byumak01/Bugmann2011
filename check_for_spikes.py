@@ -44,8 +44,8 @@ def add_spike_time(synapse_obj, syn_obj_idx, syn_idx, spike_times):
 def check_synapses(synapse_obj):
     arr = []
     for idx in range(len(synapse_obj.spike_fired)):
-        # Adding transmission probability:
         if synapse_obj.spike_fired[idx]:
+            # Adding transmission probability:
             if rand() < ev.transmission_p:
                 arr.append(idx)
     return arr

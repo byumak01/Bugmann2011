@@ -21,6 +21,7 @@ def create_layers(layer_count, neuron_count, neuron_eqs, pool_capacity):
                         refractory='refractory_period'))
         arr[i].w_pool = pool_capacity
         arr[i].is_enabled = False
+        arr[i].selected_neuron = False
         arr[i].received_spike_count = 0
         arr[i].namespace['tau'] = ev.tau
         arr[i].namespace['v_th'] = ev.threshold

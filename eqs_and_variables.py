@@ -106,6 +106,7 @@ total_current : 1 # Represents total synaptic current from article.
 fire_count : integer # This variable is used for finding out how many times a neuron produced a spike.
 is_enabled : boolean # If flag value of a neuron is True, that means neuron can receive and produce spikes.
 received_spike_count : integer
+selected_neuron : boolean
 '''
 
 # Defining necessary variables for Synapse object.

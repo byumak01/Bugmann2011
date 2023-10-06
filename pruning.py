@@ -16,23 +16,38 @@ def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selec
 # find_synapse_with_the_lowest_weight function finds synapse with the lowest weight outgoing from a neuron, for every
 # neuron in a layer.
 def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_idx):
-    selected_synapses = {}
 
     pre_idx = selected_neuron_idx
-    min_w = ev.pool_capacity + 1
+    sorted_weights = sorted(syn_obj.w[pre_idx, :])
+    i = 0
+    min_w = sorted_weights[i]
     min_w_idx = None
     p_idx = None
+    exit_loop = False
+    min_w_is_selected = False
 
-    for post_idx in ev.rf_array[selected_neuron_idx]:
-        if syn_obj.w[pre_idx, post_idx] < min_w and layer_obj.is_enabled[post_idx]:
-            min_w = syn_obj.w[pre_idx, post_idx]
-            min_w_idx = (pre_idx, post_idx)
-            p_idx = post_idx
+    while not exit_loop:
+        for post_idx in ev.rf_array[selected_neuron_idx]:
+            if syn_obj.w[pre_idx, post_idx] == min_w:
+                # after and should not be necessary
+                if layer_obj.is_enabled[post_idx] and not syn_obj.is_selected[pre_idx, post_idx]:
+                    min_w_idx = (pre_idx, post_idx)
+                    p_idx = post_idx
+                    exit_loop = True
+                    min_w_is_selected = True
+                else:
+                    if i + 1 < len(sorted_weights):
+                        i += 1
+                        min_w = sorted_weights[i]
+                    else:
+                        exit_loop = True
 
-    syn_obj.is_selected[pre_idx, p_idx] = True
-    add_to_selected_synapses(syn_obj_idx - 1, pre_idx, selected_synapses, min_w_idx)
+    if min_w != 0 and min_w_is_selected:
+        syn_obj.is_selected[pre_idx, p_idx] = True
+        layer_obj.selected_neuron[p_idx] = True
+        add_to_selected_synapses(syn_obj_idx - 1, pre_idx, ev.selected_synapses, min_w_idx)
 
-    return selected_synapses, p_idx
+    return p_idx
 
 
 def give_weights_back_to_pool(syn_obj, layer_obj):
@@ -57,17 +72,17 @@ def draw_after_pruning_state(selected_synapses):
 
 def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):
     len_syn_objects = len(synapse_objects)
-    selected_neuron_indices = ev.inputs[ev.input_shape]
+    selected_neuron_indices = set(ev.inputs[ev.input_shape])
     for idx in range(0, len_syn_objects - 1):
         hold_indices = []
         for selected_neuron_idx in selected_neuron_indices:
-            dct, selected_neuron_idx = select_synapses_with_min_w(idx, synapse_objects[idx], layers[idx],
+            if selected_neuron_idx is not None:
+                selected_neuron_idx = select_synapses_with_min_w(idx, synapse_objects[idx], layers[idx],
                                                                   selected_neuron_idx)
 
-            hold_indices.append(selected_neuron_idx)
-            ev.selected_synapses.update(dct)
+                hold_indices.append(selected_neuron_idx)
         give_weights_back_to_pool(synapse_objects[idx], layers[idx])
-        selected_neuron_indices = hold_indices
+        selected_neuron_indices = set(hold_indices)
 
     draw.reset_board()
     draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
