@@ -24,17 +24,18 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
     min_w_idx = None
     p_idx = None
     exit_loop = False
-    min_w_is_selected = False
 
     while not exit_loop:
+        # alttaki for looptan degistirerek kurtulabiliriz.
+        # birbirine cok yakin agirliklar oldugu durumda random atcak virgulden sonra 4 basamaga gore roundlicaz.
+        # sort etmeye gerek olmayabilir belki ??
         for post_idx in ev.rf_array[selected_neuron_idx]:
             if syn_obj.w[pre_idx, post_idx] == min_w:
                 # after and should not be necessary
-                if layer_obj.is_enabled[post_idx] and not syn_obj.is_selected[pre_idx, post_idx]:
+                if layer_obj.is_enabled[post_idx] and not syn_obj.is_selected[pre_idx, post_idx] and min_w > 0:
                     min_w_idx = (pre_idx, post_idx)
                     p_idx = post_idx
                     exit_loop = True
-                    min_w_is_selected = True
                 else:
                     if i + 1 < len(sorted_weights):
                         i += 1
@@ -42,7 +43,7 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
                     else:
                         exit_loop = True
 
-    if min_w != 0 and min_w_is_selected:
+    if p_idx is not None:
         syn_obj.is_selected[pre_idx, p_idx] = True
         layer_obj.selected_neuron[p_idx] = True
         add_to_selected_synapses(syn_obj_idx - 1, pre_idx, ev.selected_synapses, min_w_idx)
