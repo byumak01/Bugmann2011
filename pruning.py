@@ -11,44 +11,75 @@ def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selec
     selected_synapses[key].append(selected_synapse_idx)
 
 
-# spesifik bir norondan cikan butun agirliklari yazdir yaptigi secimi kontrol et
-#
-# find_synapse_with_the_lowest_weight function finds synapse with the lowest weight outgoing from a neuron, for every
-# neuron in a layer.
+# ROUND EDIP MINIMUMLAR ARASINDAN RASTGELE SECEN ALGORITMA
 def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_idx):
-
+    print("---------FUNCTION START---------------")
+    print(f"SYN OBJ IDX: {syn_obj_idx}")
     pre_idx = selected_neuron_idx
-    sorted_weights = sorted(syn_obj.w[pre_idx, :])
-    i = 0
-    min_w = sorted_weights[i]
-    min_w_idx = None
+
+    post_indices = ev.rf_array[selected_neuron_idx]
+
+    digit_count = 4
+
     p_idx = None
-    exit_loop = False
+    min_w_idx = None
 
-    while not exit_loop:
-        # alttaki for looptan degistirerek kurtulabiliriz.
-        # birbirine cok yakin agirliklar oldugu durumda random atcak virgulden sonra 4 basamaga gore roundlicaz.
-        # sort etmeye gerek olmayabilir belki ??
-        for post_idx in ev.rf_array[selected_neuron_idx]:
-            if syn_obj.w[pre_idx, post_idx] == min_w:
-                # after and should not be necessary
-                if layer_obj.is_enabled[post_idx] and not syn_obj.is_selected[pre_idx, post_idx] and min_w > 0:
-                    min_w_idx = (pre_idx, post_idx)
-                    p_idx = post_idx
-                    exit_loop = True
-                else:
-                    if i + 1 < len(sorted_weights):
-                        i += 1
-                        min_w = sorted_weights[i]
-                    else:
-                        exit_loop = True
+    weights = syn_obj.w[pre_idx, :]
+    print(f"weights : {weights}")
 
-    if p_idx is not None:
-        syn_obj.is_selected[pre_idx, p_idx] = True
-        layer_obj.selected_neuron[p_idx] = True
-        add_to_selected_synapses(syn_obj_idx - 1, pre_idx, ev.selected_synapses, min_w_idx)
+    # We round after digit_count digit
+    weights = [round(weight, digit_count) for weight in weights]
+    print(f"weights after rounding : {weights}")
+
+    # We take out zeros from weights
+    non_zero_weights = [weight for weight in weights if weight != 0]
+
+    non_zero_weights = set(non_zero_weights)
+
+    non_zero_weights = list(non_zero_weights)
+
+    non_zero_weights = sorted(non_zero_weights)
+
+    print(f"non zero weights : {non_zero_weights}")
+
+    # Get minimum weight
+    if non_zero_weights:
+
+        # a list for storing post indices with same min_w.
+        indices_with_same_w = []
+
+        loop_flag = False
+
+        while not loop_flag and non_zero_weights:
+            min_w = non_zero_weights.pop(0)
+            print(f"min_w {min_w}")
+            find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w)
+
+            if indices_with_same_w:
+                p_idx = random.choice(indices_with_same_w)
+                min_w_idx = (pre_idx, p_idx)
+                print(f"random min w post idx: {p_idx}")
+                loop_flag = True
+
+        prob = 0.5
+        if p_idx is not None and rand() <= prob:
+            syn_obj.is_selected[pre_idx, p_idx] = True
+            layer_obj.selected_neuron[p_idx] = True
+            add_to_selected_synapses(syn_obj_idx - 1, pre_idx, ev.selected_synapses, min_w_idx)
+
+        print("---------------FINISH-----------------")
 
     return p_idx
+
+
+def find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w):
+    for post_idx in post_indices:
+        if syn_obj.is_enabled[pre_idx, post_idx] and not syn_obj.is_selected[pre_idx, post_idx]:
+            if np.round(syn_obj.w[pre_idx, post_idx], digit_count) == min_w:
+                print(f"If enabled: pre_idx {pre_idx} and post idx {post_idx}")
+                indices_with_same_w.append(post_idx)
+                print(f"indices w same w {indices_with_same_w}")
+
 
 
 def give_weights_back_to_pool(syn_obj, layer_obj):
