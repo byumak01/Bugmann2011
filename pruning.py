@@ -1,6 +1,7 @@
 from brian2 import *
 import eqs_and_variables as ev
 import draw
+import random
 
 
 def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selected_synapse_idx):

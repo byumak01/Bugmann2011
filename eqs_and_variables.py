@@ -6,7 +6,7 @@ run_time = 501 * ms
 
 run_counter = 0
 
-number_of_runs = 5
+number_of_runs = 3
 
 selected_synapses = {}
 
