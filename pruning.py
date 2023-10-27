@@ -62,7 +62,7 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
                 print(f"random min w post idx: {p_idx}")
                 loop_flag = True
 
-        prob = 0.5
+        prob = 1
         if p_idx is not None and rand() <= prob:
             syn_obj.is_selected[pre_idx, p_idx] = True
             layer_obj.selected_neuron[p_idx] = True
