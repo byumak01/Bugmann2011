@@ -82,7 +82,6 @@ def find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count,
                 print(f"indices w same w {indices_with_same_w}")
 
 
-
 def give_weights_back_to_pool(syn_obj, layer_obj):
     synapse_count = len(syn_obj.w)
 
@@ -103,7 +102,30 @@ def draw_after_pruning_state(selected_synapses):
             draw.draw_neuron_activity(ev.threshold, neuron_idx, obj_idx)
 
 
-def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):
+def find_neurons_with_no_input(layers, synapse_objects, enabled_neurons):
+    # Iterate over enabled neurons in each layer.
+    for key in range(ev.layer_count - 1):
+        layer_idx = key
+        # Neuron Group object for the layer we are itearing over is assigned to layer_obj.
+        layer_obj = layers[layer_idx]
+        for neuron_idx in enabled_neurons[layer_idx]:
+            # If neuron's pool capacity is maximum that means it has no input connections.
+            if layer_obj.w_pool[neuron_idx] == ev.pool_capacity:
+                # If a neuron has no input connections then we also destroy its output connections.
+                post_indices = ev.rf_array[neuron_idx]
+                synapse_idx = layer_idx + 1
+                synapse_obj = synapse_objects[synapse_idx]
+                post_layer_idx = layer_idx + 1
+                post_layer_obj = layers[post_layer_idx]
+                for post_idx in post_indices:
+                    syn_weight = synapse_obj.w[neuron_idx, post_idx]
+                    # give weight back to pool of post neuron.
+                    post_layer_obj.w_pool[post_idx] += syn_weight
+                    # make weight of synapse 0
+                    synapse_obj.w[neuron_idx, post_idx] = 0
+
+
+def pruning(layers, synapse_objects, folder_path, is_pruning, run_count, enabled_neurons):
     len_syn_objects = len(synapse_objects)
     selected_neuron_indices = set(ev.inputs[ev.input_shape])
     for idx in range(0, len_syn_objects - 1):
@@ -111,11 +133,13 @@ def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):
         for selected_neuron_idx in selected_neuron_indices:
             if selected_neuron_idx is not None:
                 selected_neuron_idx = select_synapses_with_min_w(idx, synapse_objects[idx], layers[idx],
-                                                                  selected_neuron_idx)
+                                                                 selected_neuron_idx)
 
                 hold_indices.append(selected_neuron_idx)
         give_weights_back_to_pool(synapse_objects[idx], layers[idx])
         selected_neuron_indices = set(hold_indices)
+
+    find_neurons_with_no_input(layers, synapse_objects, enabled_neurons)
 
     draw.reset_board()
     draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
