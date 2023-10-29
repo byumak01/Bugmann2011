@@ -45,6 +45,9 @@ def check_synapses(synapse_obj):
     arr = []
     for idx in range(len(synapse_obj.spike_fired)):
         if synapse_obj.spike_fired[idx]:
+            # We first make spike_fired variable False again for all synapses so that when we receive a new spike
+            # we can understand it.
+            synapse_obj.spike_fired[idx] = False
             # Adding transmission probability:
             if rand() < ev.transmission_p:
                 arr.append(idx)
@@ -74,9 +77,6 @@ def check_any_spikes(t, synapse_objects, weight_delay, spike_times, layers):
         # If any spikes are received, the indexes would be assigned to syn_indices variable, so the condition below will
         # be True
         if len(syn_indices) > 0:
-            # We first make spike_fired variable False again for all synapses so that when we receive a new spike
-            # we can understand it.
-            synapse_obj.spike_fired[syn_indices] = False
             # Now we will iterate over syn_indices to put every spike t correct places in our dictionary named as
             # spike_times.
             for syn_idx in syn_indices:
