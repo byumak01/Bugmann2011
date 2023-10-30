@@ -14,8 +14,6 @@ def add_to_selected_synapses(layer_obj_idx, neuron_idx, selected_synapses, selec
 
 # ROUND EDIP MINIMUMLAR ARASINDAN RASTGELE SECEN ALGORITMA
 def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_idx):
-    print("---------FUNCTION START---------------")
-    print(f"SYN OBJ IDX: {syn_obj_idx}")
     pre_idx = selected_neuron_idx
 
     post_indices = ev.rf_array[selected_neuron_idx]
@@ -26,11 +24,9 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
     min_w_idx = None
 
     weights = syn_obj.w[pre_idx, :]
-    print(f"weights : {weights}")
 
     # We round after digit_count digit
     weights = [round(weight, digit_count) for weight in weights]
-    print(f"weights after rounding : {weights}")
 
     # We take out zeros from weights
     non_zero_weights = [weight for weight in weights if weight != 0]
@@ -40,8 +36,6 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
     non_zero_weights = list(non_zero_weights)
 
     non_zero_weights = sorted(non_zero_weights)
-
-    print(f"non zero weights : {non_zero_weights}")
 
     # Get minimum weight
     if non_zero_weights:
@@ -53,13 +47,11 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
 
         while not loop_flag and non_zero_weights:
             min_w = non_zero_weights.pop(0)
-            print(f"min_w {min_w}")
             find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w)
 
             if indices_with_same_w:
                 p_idx = random.choice(indices_with_same_w)
                 min_w_idx = (pre_idx, p_idx)
-                print(f"random min w post idx: {p_idx}")
                 loop_flag = True
 
         prob = 1
@@ -68,8 +60,6 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
             layer_obj.selected_neuron[p_idx] = True
             add_to_selected_synapses(syn_obj_idx - 1, pre_idx, ev.selected_synapses, min_w_idx)
 
-        print("---------------FINISH-----------------")
-
     return p_idx
 
 
@@ -77,9 +67,7 @@ def find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count,
     for post_idx in post_indices:
         if syn_obj.is_enabled[pre_idx, post_idx] and not syn_obj.is_selected[pre_idx, post_idx]:
             if np.round(syn_obj.w[pre_idx, post_idx], digit_count) == min_w:
-                print(f"If enabled: pre_idx {pre_idx} and post idx {post_idx}")
                 indices_with_same_w.append(post_idx)
-                print(f"indices w same w {indices_with_same_w}")
 
 
 def give_weights_back_to_pool(syn_obj, layer_obj):
