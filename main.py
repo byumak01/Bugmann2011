@@ -126,7 +126,7 @@ def updater(t):
     # Executes Pruning if termination condition is True
     if ev.termination_condition:
         ev.termination_condition = False
-        pr.pruning(layers, synapse_objects, folder_path, True, ev.run_counter, enabled_neurons)
+        pr.pruning(layers, synapse_objects, folder_path, True, ev.run_counter)
         ev.run_counter += 1
         rs.reset_simulation(layers, weight_delay, spike_times)
 

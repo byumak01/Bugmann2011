@@ -31,7 +31,7 @@ def update_pool_reserve(hidden_layer_obj, ind_post):
 # take_weight_from_other_synapses function will execute rule 10.
 def take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w):
     for i in ev.rf_array[ind_post]:
-        if synapse_obj.w[i, ind_post] > updated_w and i != ind_pre and not synapse_obj.is_selected[i, ind_post]:
+        if synapse_obj.w[i, ind_post] > updated_w and i != ind_pre:
             updater_w = synapse_obj.w[i, ind_post]  # Assigning to a dummy variable.
 
             # other synapse_obj releases some quantity.  Rule (11) at article
@@ -43,14 +43,14 @@ def take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w):
 
 def weight_update(synapse_obj, hidden_layer_obj, syn_indices):
     for ind_pre, ind_post in zip(synapse_obj.i[syn_indices], synapse_obj.j[syn_indices]):
-        #
-        updated_w = synapse_obj.w[ind_pre, ind_post]
+        if not synapse_obj.is_selected[ind_pre, ind_post]:
+            updated_w = synapse_obj.w[ind_pre, ind_post]
 
-        # take_weight_from_other_synapses function will execute rule 10.
-        take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w)
+            # take_weight_from_other_synapses function will execute rule 10.
+            take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w)
 
-        # Taking synaptic weight from pool.
-        take_weight_from_pool(synapse_obj, ind_pre, ind_post, hidden_layer_obj)
+            # Taking synaptic weight from pool.
+            take_weight_from_pool(synapse_obj, ind_pre, ind_post, hidden_layer_obj)
 
-        # Updating pool reserve.
-        update_pool_reserve(hidden_layer_obj, ind_post)
+            # Updating pool reserve.
+            update_pool_reserve(hidden_layer_obj, ind_post)
