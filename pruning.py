@@ -86,6 +86,10 @@ def draw_after_pruning_state(selected_synapses):
             obj_idx = ky[0] + 1
             neuron_idx = idx_pair[1]
             draw.draw_neuron_activity(ev.threshold, neuron_idx, obj_idx)
+            draw.get_coordinates_and_draw(5, neuron_idx, obj_idx + 1, 'red', True)
+
+    for idx in ev.responses[ev.response_shape]:
+        draw.get_coordinates_and_draw(5, idx, ev.layer_count, 'white', False)
 
 
 def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):

@@ -2,11 +2,11 @@ from brian2 import *
 
 # Simulation run time
 # If u want to run simulation for 100 second please select runtime as 101 ms so code can draw the situation at 100 ms.
-run_time = 501 * ms
+run_time = 1001 * ms
 
 run_counter = 0
 
-number_of_runs = 2
+number_of_runs = 1
 
 selected_synapses = {}
 
@@ -83,10 +83,12 @@ input_shape = 'A'
 rf_array = []
 
 # response shape 'RIGHT_HAND' or 'LEFT_HAND'
-response_shape = 'RIGHT_HAND'
+response_shape = 'RIGHT_HAND_A'
 
-responses = {'RIGHT_HAND': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
-             'LEFT_HAND': [23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65]}
+responses = {'RIGHT_HAND_A': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
+             'RIGHT_HAND_B': [36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
+             'LEFT_HAND_C': [23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65],
+             'LEFT_HAND_D': [31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65]}
 
 inputs = {'A': [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87],
           'B': [12, 13, 14, 15, 16, 22, 27, 32, 37, 42, 43, 44, 45, 46, 47, 52, 57, 62, 67, 72, 77, 82, 83, 84, 85, 86],

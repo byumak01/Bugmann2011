@@ -94,7 +94,10 @@ def print_layer_names(x1, y1, layer_idx, flag):
 
 
 def print_time(t, x1, y1):
-    dr.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
+    if t <= ev.run_time:
+        dr.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
+    else:
+        dr.text((x1 + 20, y1 + 30), f"PRUNING", font=font, fill='white')
 
 
 def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
@@ -119,6 +122,6 @@ def draw_outlines_layer_names_and_time(t, folder_path, pruning, run_count):
             dr.rectangle([(x1, y1), (x2, y2)], outline='gray') if layer_idx != 0 else None
             print_layer_names(x1, y1, layer_idx, True) if layer_idx != 0 and neuron_idx == 0 else None
 
-    name = t/ms if not pruning else f"pruning_{run_count + 1}"
+    name = t / ms if not pruning else f"pruning_{run_count + 1}"
     image_name = f"{folder_path}/{name}.png"
     image.save(image_name, "PNG")
