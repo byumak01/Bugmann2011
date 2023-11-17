@@ -48,12 +48,17 @@ def draw_enabled_neurons(layers):
 
 # get_coordinates function will return coordinates for squares which are presenting neurons.
 def get_coordinates(state_of_neuron, neuron_idx, layer_idx, if_lower_grid):
+    # Get 2D indices of the neuron
     neuron_row, neuron_col = rf.get_2d_indices(neuron_idx, ev.ng_row_count, ev.ng_column_count)
 
+    # Calculate row start position based on the lower or upper grid
     row_start_position = 10 * ev.ng_row_count + 60 if if_lower_grid else 25
-    x1 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * neuron_col + 5 - state_of_neuron) + 10
+
+    # Calculate x1, y1, x2, y2 coordinates
+    column_offset = 10 * ev.ng_column_count + 20
+    x1 = layer_idx * column_offset + (10 * neuron_col + 5 - state_of_neuron) + 10
     y1 = row_start_position + (10 * neuron_row + 5 - state_of_neuron)
-    x2 = layer_idx * (10 * ev.ng_column_count + 20) + (10 * (neuron_col + 1) - 5 + state_of_neuron) + 10
+    x2 = layer_idx * column_offset + (10 * (neuron_col + 1) - 5 + state_of_neuron) + 10
     y2 = row_start_position + (10 * (neuron_row + 1) - 5 + state_of_neuron)
 
     return x1, y1, x2, y2
@@ -94,15 +99,19 @@ def print_layer_names(x1, y1, layer_idx, flag):
 
 
 def print_time(t, x1, y1):
+    x_coord = x1 + 20
+    y_coord = y1 + 30
     if t <= ev.run_time:
-        dr.text((x1 + 20, y1 + 30), f"t = {t / ms} ms", font=font, fill='white')
+        dr.text((x_coord, y_coord), f"t = {round(t / ms, 2)} ms", font=font, fill='white')
     else:
-        dr.text((x1 + 20, y1 + 30), f"PRUNING", font=font, fill='white')
+        dr.text((x_coord, y_coord), f"PRUNING", font=font, fill='white')
 
 
-def draw_active_neurons_in_stimulus_layer(active_poisson_neurons):
+def draw_active_neurons_in_stimulus_layer(active_poisson_neurons, if_pruning):
+    fill = 5 if if_pruning else 1.5
+
     for idx in active_poisson_neurons:
-        get_coordinates_and_draw(1.5, idx, 0, 'white', False)
+        get_coordinates_and_draw(fill, idx, 0, 'white', False)
 
 
 def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
@@ -113,15 +122,22 @@ def draw_firing_neurons_in_stimulus_layer(firing_poisson_neurons):
 def draw_outlines_layer_names_and_time(t, folder_path, pruning, run_count):
     for layer_idx in range(ev.layer_count + 1):
         for neuron_idx in range(ev.neuron_count):
-            x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, False)
-            dr.rectangle([(x1, y1), (x2, y2)], outline='gray')
-            print_layer_names(x1, y1, layer_idx, False) if neuron_idx == 0 else None
+            # Draw outlines for the lower grid
+            x1_lower, y1_lower, x2_lower, y2_lower = get_coordinates(5, neuron_idx, layer_idx, False)
+            dr.rectangle([(x1_lower, y1_lower), (x2_lower, y2_lower)], outline='gray')
+            print_layer_names(x1_lower, y1_lower, layer_idx, False) if neuron_idx == 0 else None
 
-            x1, y1, x2, y2 = get_coordinates(5, neuron_idx, layer_idx, True)
-            print_time(t, x1, y1) if neuron_idx == 0 and layer_idx == 0 else None
-            dr.rectangle([(x1, y1), (x2, y2)], outline='gray') if layer_idx != 0 else None
-            print_layer_names(x1, y1, layer_idx, True) if layer_idx != 0 and neuron_idx == 0 else None
+            # Draw outlines for the upper grid
+            x1_upper, y1_upper, x2_upper, y2_upper = get_coordinates(5, neuron_idx, layer_idx, True)
+            if neuron_idx == 0 and layer_idx == 0:
+                print_time(t, x1_upper, y1_upper)
+            elif layer_idx != 0:
+                dr.rectangle([(x1_upper, y1_upper), (x2_upper, y2_upper)], outline='gray')
+                if neuron_idx == 0:
+                    print_layer_names(x1_upper, y1_upper, layer_idx, True)
 
-    name = t / ms if not pruning else f"pruning_{run_count + 1}"
-    image_name = f"{folder_path}/{name}.png"
+    # Save the image
+    label = t / ms if not pruning else f"pruning_{run_count + 1}"
+    image_name = f"{folder_path}/{label}.png"
     image.save(image_name, "PNG")
+

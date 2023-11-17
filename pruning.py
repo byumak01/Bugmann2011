@@ -107,6 +107,6 @@ def pruning(layers, synapse_objects, folder_path, is_pruning, run_count):
         selected_neuron_indices = set(hold_indices)
 
     draw.reset_board()
-    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
+    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape], True)
     draw_after_pruning_state(ev.selected_synapses)
     draw.draw_outlines_layer_names_and_time(ev.run_time + 1 * ms, folder_path, is_pruning, run_count)

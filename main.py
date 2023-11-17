@@ -1,5 +1,4 @@
 # Code is written by: Barış YUMAK
-# 12/06/2023  01.36
 
 from brian2 import *
 import reset_simulation as rs
@@ -68,6 +67,10 @@ synapse_objects = cl.create_synapse_objects(ev.syn_eqs, layers, input_layer, ev.
 # FOR NOW WE SELECT TARGET NEURON MANUALLY. For more detail Check set_target_neuron_flag() function.
 target_neuron_idx = ef.set_target_neuron_flag(layers, enabled_neurons)
 
+# Making neurons in the response layer enabled according to given shape (RIGHT HAND or LEFT HAND)
+for element in ev.responses[ev.response_shape]:
+    layers[len(layers) - 1].is_enabled[element] = True
+
 # Setting enable flag for rest of the layers
 # we subtract 3 from length of layers to reach to the index of layer which is before last hidden layer.
 if len(layers) - 3 >= 0:
@@ -82,13 +85,9 @@ for post_neuron_idx in range(ev.neuron_count):
 # Giving initial values to synapse objects
 cofs.set_initial_values(synapse_objects, ev.initial_weights, ev.transmission_p)
 
+
 # Defining a monitor for synapse objects
 # syn_mon = cl.create_synapse_mon(synapse_objects)
-
-# Making neurons in the response layer enabled according to given shape (RIGHT HAND or LEFT HAND)
-for element in ev.responses[ev.response_shape]:
-    layers[len(layers) - 1].is_enabled[element] = True
-
 
 @network_operation(when='after_end')
 def updater(t):
@@ -98,7 +97,7 @@ def updater(t):
     # Drawing enabled neurons.
     draw.draw_enabled_neurons(layers)
     # Drawing active neurons in stimulus layer.
-    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape])
+    draw.draw_active_neurons_in_stimulus_layer(ev.inputs[ev.input_shape], False)
 
     # check_any_spikes function will check if a spike is fired during current t step.
     # If a spike is fired it will be stored inside a dictionary named spike_times.

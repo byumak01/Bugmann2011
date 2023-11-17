@@ -1,5 +1,6 @@
 from brian2 import *
 import receptive_field as rf
+import eqs_and_variables as ev
 
 
 # create_key_for_enabled_neurons function creates a key with given hidden_layer index.
@@ -58,4 +59,4 @@ def set_target_neuron_flag(layers, enabled_neurons):
 # then return its index value.
 # FOR NOW WE GIVE TARGET NEURON INDEX DIRECTLY !!.
 def get_target_neuron_index():
-    return 46
+    return ev.target_neuron[f'TARGET_NEURON_{ev.input_shape}']
