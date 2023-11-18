@@ -1,3 +1,4 @@
+# THIS FUNCTION IS CALLED AFTER PRUNING, BEFORE START OF NEW RUN.
 def reset_simulation(layers, weight_delay, spike_times):
     weight_delay.clear()
     spike_times.clear()

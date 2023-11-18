@@ -20,9 +20,9 @@ import pruning as pr
 start = time.time()
 
 # Creating path for saving results and variables used in simulation.
-current_date = datetime.datetime.now().strftime("%d%m%Y")
+current_date = datetime.datetime.now().strftime("%m%d%Y")
 simulation_start_time = datetime.datetime.now().strftime("%H%M")
-folder_path = f"RESULTS/{current_date}/FINAL_{simulation_start_time}_ip{ev.input_shape}_dly{ev.delay / ms}_FR{ev.firing_rate / Hz}_tp{ev.transmission_p}_fr{ev.fraction}"
+folder_path = f"Results/{current_date}/{simulation_start_time}_input{ev.input_shape}_delay{ev.delay/ms}ms"
 if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 

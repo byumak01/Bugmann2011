@@ -61,44 +61,70 @@ initial_firing_rate = 0 * Hz
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
 layer_count = 6
 
-# neuron_count variable shows how many neurons will be in a layer_idx.
-neuron_count = 100
+neuron_count_options = {'NEURON_COUNT_default_A': 100,
+                        'NEURON_COUNT_default_B': 100,
+                        'NEURON_COUNT_default_C': 100,
+                        'NEURON_COUNT_default_D': 100}
 
-# row count
-ng_row_count = 10
+ng_row_count_options = {'NG_ROW_COUNT_default_A': 10,
+                        'NG_ROW_COUNT_default_B': 10,
+                        'NG_ROW_COUNT_default_C': 10,
+                        'NG_ROW_COUNT_default_D': 10}
 
-# column count
-ng_column_count = 10
+ng_column_count_options = {'NG_COLUMN_COUNT_default_A': 10,
+                           'NG_COLUMN_COUNT_default_B': 10,
+                           'NG_COLUMN_COUNT_default_C': 10,
+                           'NG_COLUMN_COUNT_default_D': 10}
 
-# rf row count   (rf means receptive field)
-rf_row_count = 5
+rf_row_count_options = {'RF_ROW_COUNT_default_A': 5,
+                        'RF_ROW_COUNT_default_B': 5,
+                        'RF_ROW_COUNT_default_C': 5,
+                        'RF_ROW_COUNT_default_D': 5}
 
-# rf column count
-rf_column_count = 5
+rf_column_count_options = {'RF_COLUMN_COUNT_default_A': 5,
+                           'RF_COLUMN_COUNT_default_B': 5,
+                           'RF_COLUMN_COUNT_default_C': 5,
+                           'RF_COLUMN_COUNT_default_D': 5}
 
 # input shape make it 'A' or 'B' or 'C' or 'D'
-input_shape = 'A'
+input_shape = 'default_A'
 
 # rf array will be used in weight updates
 rf_array = []
 
+# neuron_count variable shows how many neurons will be in a layer_idx.
+neuron_count = neuron_count_options[f"NEURON_COUNT_{input_shape}"]
+
+# row count
+ng_row_count = ng_row_count_options[f'NG_ROW_COUNT_{input_shape}']
+
+# column count
+ng_column_count = ng_column_count_options[f'NG_COLUMN_COUNT_{input_shape}']
+
+# rf row count   (rf means receptive field)
+rf_row_count = rf_row_count_options[f'RF_ROW_COUNT_{input_shape}']
+
+# rf column count
+rf_column_count = rf_column_count_options[f'RF_COLUMN_COUNT_{input_shape}']
+
 # response shape 'RIGHT_HAND' or 'LEFT_HAND'
 response_shape = f"RESPONSE_{input_shape}"
 
-responses = {'RESPONSE_A': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
-             'RESPONSE_B': [36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
-             'RESPONSE_C': [23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65],
-             'RESPONSE_D': [31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65]}
+responses = {'RESPONSE_default_A': [26, 36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
+             'RESPONSE_default_B': [36, 37, 38, 46, 47, 48, 56, 57, 58, 64, 65, 66, 67, 68],
+             'RESPONSE_default_C': [23, 31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65],
+             'RESPONSE_default_D': [31, 32, 33, 41, 42, 43, 51, 52, 53, 61, 62, 63, 64, 65]}
 
-inputs = {'A': [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87],
-          'B': [12, 13, 14, 15, 16, 22, 27, 32, 37, 42, 43, 44, 45, 46, 47, 52, 57, 62, 67, 72, 77, 82, 83, 84, 85, 86],
-          'C': [14, 15, 16, 23, 27, 32, 42, 52, 62, 73, 77, 84, 85, 86],
-          'D': [12, 13, 14, 15, 22, 26, 32, 37, 42, 47, 52, 57, 62, 67, 72, 76, 82, 83, 84, 85]}
+inputs = {'default_A': [14, 23, 25, 33, 35, 43, 45, 52, 56, 62, 63, 64, 65, 66, 71, 77, 81, 87],
+          'default_B': [12, 13, 14, 15, 16, 22, 27, 32, 37, 42, 43, 44, 45, 46, 47, 52, 57, 62, 67, 72, 77, 82, 83, 84,
+                        85, 86],
+          'default_C': [14, 15, 16, 23, 27, 32, 42, 52, 62, 73, 77, 84, 85, 86],
+          'default_D': [12, 13, 14, 15, 22, 26, 32, 37, 42, 47, 52, 57, 62, 67, 72, 76, 82, 83, 84, 85]}
 
-target_neuron = {'TARGET_NEURON_A': 46,
-                 'TARGET_NEURON_B': 56,
-                 'TARGET_NEURON_C': 43,
-                 'TARGET_NEURON_D': 53}
+target_neuron = {'TARGET_NEURON_default_A': 46,
+                 'TARGET_NEURON_default_B': 56,
+                 'TARGET_NEURON_default_C': 43,
+                 'TARGET_NEURON_default_D': 53}
 
 
 def create_dictionary():
