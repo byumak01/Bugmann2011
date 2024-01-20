@@ -47,7 +47,7 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
 
         while not loop_flag and non_zero_weights:
             min_w = non_zero_weights.pop(0)
-            find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w)
+            find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w, layer_obj)
 
             if indices_with_same_w:
                 p_idx = random.choice(indices_with_same_w)
@@ -63,9 +63,10 @@ def select_synapses_with_min_w(syn_obj_idx, syn_obj, layer_obj, selected_neuron_
     return p_idx
 
 
-def find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w):
+def find_synapses_with_min_w(pre_idx, post_indices, syn_obj, min_w, digit_count, indices_with_same_w, layer_obj):
     for post_idx in post_indices:
-        if syn_obj.is_enabled[pre_idx, post_idx] and not syn_obj.is_selected[pre_idx, post_idx]:
+        if syn_obj.is_enabled[pre_idx, post_idx] and not syn_obj.is_selected[pre_idx, post_idx] and \
+                layer_obj.fire_count[post_idx] > 0:
             if np.round(syn_obj.w[pre_idx, post_idx], digit_count) == min_w:
                 indices_with_same_w.append(post_idx)
 
