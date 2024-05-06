@@ -23,8 +23,6 @@ start = time.time()
 current_date = datetime.datetime.now().strftime("%m%d%Y")
 simulation_start_time = datetime.datetime.now().strftime("%H%M")
 folder_path = f"Results/{current_date}/{simulation_start_time}_input{ev.input_shape}_delay{ev.delay/ms}ms"
-if not os.path.exists(folder_path):
-    os.makedirs(folder_path)
 
 # Creating a hashmap for alpha function values.
 hash_map = sc.create_hash_map_for_alpha_function()
@@ -125,6 +123,8 @@ def updater(t):
     # Executes Pruning if termination condition is True
     if ev.termination_condition:
         ev.termination_condition = False
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
         pr.pruning(layers, synapse_objects, folder_path, True, ev.run_counter)
         ev.run_counter += 1
         rs.reset_simulation(layers, weight_delay, spike_times)
@@ -145,10 +145,13 @@ net.run(ev.run_time)
 end = time.time()
 
 elapsed_time = end - start
+
+if not os.path.exists(folder_path):
+    os.makedirs(folder_path)
 sssr.save_simulation_setup_and_results(folder_path, elapsed_time)
 # sssr.draw_neuron_state_graphs(folder_path, layer_mon, layers)
 
 print('Execution t:', elapsed_time, 'seconds')
 
-print(input_layer_mon.i)
-print(input_layer_mon.t)
+# print(input_layer_mon.i)
+# print(input_layer_mon.t)

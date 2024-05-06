@@ -46,11 +46,13 @@ def weight_update(synapse_obj, hidden_layer_obj, syn_indices):
         if not synapse_obj.is_selected[ind_pre, ind_post]:
             updated_w = synapse_obj.w[ind_pre, ind_post]
 
-            # take_weight_from_other_synapses function will execute rule 10.
-            take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w)
-
             # Taking synaptic weight from pool.
             take_weight_from_pool(synapse_obj, ind_pre, ind_post, hidden_layer_obj)
+
+            updated_w = synapse_obj.w[ind_pre, ind_post]
+
+            # take_weight_from_other_synapses function will execute rule 10.
+            take_weight_from_other_synapses(synapse_obj, ind_pre, ind_post, updated_w)
 
             # Updating pool reserve.
             update_pool_reserve(hidden_layer_obj, ind_post)

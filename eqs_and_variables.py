@@ -1,7 +1,10 @@
 from brian2 import *
 
+# input shape make it 'default_A' or 'default_B' or 'default_C' or 'default_D'
+input_shape = 'default_A'
+
 # Simulation run time
-# If u want to run simulation for 100 second please select runtime as 101 ms so code can draw the situation at 100 ms.
+# Modifying this should not be necessary.
 run_time = 1001 * ms
 
 run_counter = 0
@@ -16,7 +19,7 @@ termination_condition = False
 # threshold represents threshold value for post-synaptic neuron.
 threshold = 15 / 1000
 
-# beta
+# beta value from paper
 beta = 0.91
 
 # tau represents RC time constant.
@@ -61,6 +64,8 @@ initial_firing_rate = 0 * Hz
 # MUST BE EQUAL OR BIGGER THAN 2 !!!!
 layer_count = 6
 
+# ------------------------------------------------------------------------------------- #
+
 neuron_count_options = {'NEURON_COUNT_default_A': 100,
                         'NEURON_COUNT_default_B': 100,
                         'NEURON_COUNT_default_C': 100,
@@ -85,9 +90,6 @@ rf_column_count_options = {'RF_COLUMN_COUNT_default_A': 5,
                            'RF_COLUMN_COUNT_default_B': 5,
                            'RF_COLUMN_COUNT_default_C': 5,
                            'RF_COLUMN_COUNT_default_D': 5}
-
-# input shape make it 'A' or 'B' or 'C' or 'D'
-input_shape = 'default_A'
 
 # rf array will be used in weight updates
 rf_array = []
