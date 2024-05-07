@@ -9,7 +9,11 @@ Python
 brian2
 brian2tools
 
-You can create a virtual environment to install brian2 and brian2 tools.
+You can create a virtual environment to install brian2 and brian2tools.
+Commands:
+
+pip install brian2
+pip install brian2tools
 
 How to use ?
 
