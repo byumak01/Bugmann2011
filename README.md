@@ -5,12 +5,12 @@ https://briansimulator.org/
 
 Dependencies:
 
-Python
-brian2
-brian2tools
+-Python
+-brian2
+-brian2tools
 
-You can create a virtual environment to install brian2 and brian2tools.
-Commands:
+-You can create a virtual environment to install brian2 and brian2tools.
+-Commands to install necessary packages to environment:
 
 pip install brian2
 pip install brian2tools
