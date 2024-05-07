@@ -1,6 +1,7 @@
 from brian2 import *
 import eqs_and_variables as ev
 import draw
+import math
 
 
 # spike_k represents the k. spike t.
@@ -72,7 +73,8 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
         if not (synapse_obj_idx, post_neuron_idx) in results:
             create_key_for_results(results, synapse_obj_idx, post_neuron_idx)
 
-        # current for selected synapse_obj is calculated (for last 20 spikes) then added to its place in results dictionary.
+        # current for selected synapse_obj is calculated (for last 20 spikes) then added to its place
+        # in results dictionary.
         for idx in range(length - 1):
             results[(synapse_obj_idx, post_neuron_idx)] += calculate_synaptic_current(t, spike_times_dict[key][idx + 1],
                                                                                       spike_times_dict[key][idx],
@@ -86,7 +88,8 @@ def total_synaptic_current(t, spike_times_dict, layers, synapse_objects, folder_
         layers[layer_idx].total_current[neuron_idx] = results[key2]
         voltage = layers[layer_idx].v[neuron_idx]
 
-        if (t / ms % 10 == 0 or termination_condition) and (layers[layer_idx].fire_count[neuron_idx] > 0 if layer_idx != ev.layer_count - 1 else True):
+        if (t / ms % ev.screenshot_per == 0 or termination_condition) and (
+        layers[layer_idx].fire_count[neuron_idx] > 0 if layer_idx != ev.layer_count - 1 else True):
             draw.draw_neuron_activity(voltage, neuron_idx, layer_idx)
             draw.draw_if_recruited(neuron_idx, layer_idx)
             draw.draw_outlines_layer_names_and_time(t, folder_path, False, ev.run_counter)

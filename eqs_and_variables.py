@@ -3,6 +3,10 @@ from brian2 import *
 # input shape make it 'default_A' or 'default_B' or 'default_C' or 'default_D'
 input_shape = 'default_A'
 
+# Do nor use units here !
+# Default is 10 ms and please use integers !
+screenshot_per = 10
+
 # Simulation run time
 # Modifying this should not be necessary.
 run_time = 1001 * ms
